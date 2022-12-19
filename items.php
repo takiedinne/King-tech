@@ -1,11 +1,11 @@
 <?php
 session_start();
+require_once 'bootstrap.php';
 if (isset($_SESSION['connected']) == false) {
     header('location: ' . URLROOT . '/index.php');
     exit();
 }
 require_once 'includes/header.php';
-require_once 'bootstrap.php';
 require_once 'includes/main_header.php';
 include_once('db.php');
 flash();
@@ -186,6 +186,40 @@ while ($cat_row = $cat_query->fetch_assoc()) {
     </div>
 </div>
 
+<!-- Edit -->
+<div class="modal fade php-email-form" id="SuppOpt" tabindex="-1" aria-labelledby="SuppOptLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="EditLabel">Supply Operations history</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <table id="suppHistory_table" class="table table-hover table-bordered table-striped table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>SUPPLIER</td>
+                                    <th>DATE</td>
+                                    <th>UNIT PRICE</td>
+                                    <th>QUANTITY</td>
+                                </tr>
+                            </thead>
+                            <tbody id="suppHistory_tbody">
+                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove"></span> Close</button>
+                </div>
+        </div>
+    </div>
+</div>
+
 <?php require_once './includes/footer.php'; ?>
 
 
@@ -281,6 +315,29 @@ while ($cat_row = $cat_query->fetch_assoc()) {
                 $("input#pricemin").val(data[4]);
                 $("input#pricemax").val(data[5]);
                 $("input#item_id").val(item_id);
+            },
+            error: function (resultat, statut, erreur) {
+                $("div#Edit").modal('hide');
+                create_toast("Error", "Cannot charge Edit form somthing is wrong!");
+                
+            }
+        });
+
+    }
+    function getSupOpt(item_id) {
+        $.ajax({
+            url: "includes/affichage_item.php",
+            type: "POST",
+            data: {
+                get_History: "1",
+                item_id: item_id
+            },
+
+            success: function (data) {
+                if (data != -1) {
+                    $("tbody#suppHistory_tbody").html(data);
+                    $("#suppHistory_table").DataTable();
+                }
             },
             error: function (resultat, statut, erreur) {
                 $("div#Edit").modal('hide');

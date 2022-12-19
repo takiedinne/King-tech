@@ -85,7 +85,9 @@ if (isset($_SESSION['role'])){
             (ip.`accreditation_date` = ( SELECT MAX( `accreditation_date` ) FROM item AS i1 LEFT JOIN item_price AS ip2 ON
             i1.item_id = ip2.item_id WHERE ip2.item_id = i.item_id ) OR ip.`accreditation_date` IS NULL) AND (si.`date` = (SELECT
             MAX(si1.date) from supply_invoice as si1 INNER JOIN item_supply its1 ON si1.supply_invoice_id = its1.supply_invoice_id
-            where its1.item_id = i.item_id ) OR si.date IS NULL );";
+            where its1.item_id = i.item_id ) OR si.date IS NULL ) AND (si.`time` = (SELECT
+            MAX(si1.time) from supply_invoice as si1 INNER JOIN item_supply its1 ON si1.supply_invoice_id = its1.supply_invoice_id
+            where its1.item_id = i.item_id ) OR si.time IS NULL )";
 
             $query = $conn->query($sql);
             $i = 1;
@@ -108,11 +110,35 @@ if (isset($_SESSION['role'])){
                             <td>
                                 <button  id ='" . $row['item_id'] . "'  class='edit_item_button btn btn-success btn-sm' data-bs-toggle= 'modal' data-bs-target= '#Edit' onclick = 'edit_item(".$row['item_id'].")'><span class='fas fa-edit'></span></button>
                                 <button  id = 'popover_delete_" . $row['item_id'] . "' tabindex='0' class='btn btn-danger btn-sm' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='right' data-bs-content='test' onclick='delete_item_click(".$row['item_id'].", \"".$row['item_name']."\")'><span class='fas fa-trash'></span></button>
+                                <button  id ='getSup" . $row['item_id'] . "'  class='getSuppOpt btn btn-primary btn-sm' data-bs-toggle= 'modal' data-bs-target= '#SuppOpt' onclick = 'getSupOpt(".$row['item_id'].")'><span class='fa-sharp fa-solid fa-clock-rotate-left'></span></button>
                             </td>
                         </tr>";
                 $i++;
                 
             }
+    }
+    elseif(isset($_POST['get_History'])){
+        $item_id = $_POST['item_id'];
+        $sql = "SELECT * FROM `supply_invoice` as si INNER JOIN `item_supply` as i on si.supply_invoice_id = i.supply_invoice_id 
+                INNER JOIN supplier as s on s.supplier_id =si.supplier_id 
+                WHERE i.item_id  = '" . $item_id . "' ORDER BY `si`.`date`, `si`.`time` DESC";
+
+        $query = $conn->query($sql);
+        while ($row = $query->fetch_assoc()) {
+
+            $supplier = $row['supplier_firstname']." ".$row['supplier_surname'];
+            $date = $row['date'];
+            $quantity = $row['quantity'];
+            $unitPrice = $row['unit_price'];
+            echo  "<tr>
+                        <td>" . $supplier . "</td>
+                        <td>" . $date . "</td>
+                        <td>" . $quantity. "</td>
+                        <td>". $unitPrice ." DA</td>
+                    </tr>";
+            $i++;
+            
+        }
     }
     else {
         header('location: '.URLROOT.'/index.php?codeErreur=-5');

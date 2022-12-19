@@ -23,8 +23,9 @@ if (isset($_SESSION['role'])){
         
         $result = '';
         $sql_item = " SELECT * FROM `item` as i, item_price as ip WHERE
-                             i.item_id= ip.item_id and
-                             UPPER( `item_name` ) LIKE '$textCherche' AND ip.`accreditation_date` = ( SELECT MAX( `accreditation_date`)
+                            i.item_quantity > 0 AND
+                            i.item_id= ip.item_id and
+                            UPPER( `item_name` ) LIKE '$textCherche' AND ip.`accreditation_date` = ( SELECT MAX( `accreditation_date`)
                                         FROM item_price AS ip2 WHERE ip2.item_id = i.item_id ) ";
 
                               

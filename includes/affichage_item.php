@@ -78,18 +78,28 @@ if (isset($_SESSION['role'])){
 
     }
     elseif (isset($_POST['getAllItems'])){
-            //sql according to role
-            $sql = "SELECT i.item_id, i.item_name, i.item_quantity,i.item_cat, ip.price_max, ip.price_min, its.unit_price
-             FROM item AS i LEFT JOIN item_price AS ip ON i.item_id = ip.item_id LEFT JOIN item_supply its ON
-            its.item_id = i.item_id LEFT JOIN supply_invoice as si ON si.supply_invoice_id = its.supply_invoice_id WHERE
-            (ip.`accreditation_date` = ( SELECT MAX( `accreditation_date` ) FROM item AS i1 LEFT JOIN item_price AS ip2 ON
-            i1.item_id = ip2.item_id WHERE ip2.item_id = i.item_id ) OR ip.`accreditation_date` IS NULL) AND (si.`date` = (SELECT
-            MAX(si1.date) from supply_invoice as si1 INNER JOIN item_supply its1 ON si1.supply_invoice_id = its1.supply_invoice_id
-            where its1.item_id = i.item_id ) OR si.date IS NULL ) AND (si.`time` = (SELECT
-            MAX(si1.time) from supply_invoice as si1 INNER JOIN item_supply its1 ON si1.supply_invoice_id = its1.supply_invoice_id
-            where its1.item_id = i.item_id ) OR si.time IS NULL )";
+        //sql according to role
+        $sql = "WITH 
+                    table1 AS (
+                        SELECT
+                        i.item_id, i.item_name, i.item_quantity,i.item_cat, ip.price_max, ip.price_min,
+                        ROW_NUMBER() OVER(PARTITION BY i.item_id ORDER BY `accreditation_date` DESC) AS row_number_price
+                        FROM item AS i LEFT JOIN item_price AS ip ON i.item_id = ip.item_id ),
+                
+                    table2 AS (
+                        SELECT
+                        table1.item_id, table1.item_name, table1.item_quantity, table1.item_cat, table1.price_max, table1.price_min, its.unit_price, table1.row_number_price,
+                        ROW_NUMBER() OVER(PARTITION BY table1.item_id ORDER BY si.`date`, si.`time` DESC) AS row_number_supply
+                        FROM table1 
+                        LEFT JOIN item_supply its ON
+                                its.item_id = table1.item_id LEFT JOIN supply_invoice as si ON si.supply_invoice_id = its.supply_invoice_id
+                        WHERE table1.row_number_price =1
+                    )
+                SELECT
+                    *
+                FROM table2 where row_number_supply = 1;";
 
-            $query = $conn->query($sql);
+        $query = $conn->query($sql);
             $i = 1;
             $result =array();
            // $result = $query->fetch_all(MYSQLI_ASSOC);

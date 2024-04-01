@@ -6,8 +6,9 @@
     if($_SERVER['REQUEST_METHOD'] == 'POST')
     {
         // Sanitize POST array
-         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        //print_r($_POST);
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        
+        var_dump($_POST);
 
         //trim the values
         $item_id = $_POST['item_id'];
@@ -17,8 +18,15 @@
         $pricemin = $_POST['pricemin'];
         $pricemax = $_POST['pricemax'];
         $quantity = $_POST['quantity'];
+        $barecode = $_POST['barrecode'];
         
-        $sql = " UPDATE `item` SET `item_name` = '" .$item_name. "',`item_cat` = '" .$item_cat."', `item_reference` = '" .$item_ref. "', `item_quantity` = '" .$quantity. "'  WHERE `item`.`item_id` = '" .$item_id. "'";
+        
+        
+        $sql = " UPDATE `item` SET `item_name` = '" .$item_name. "
+                    ',`item_cat` = '" .$item_cat."', `item_reference` = '" .$item_ref. "
+                    ', `item_quantity` = '" .$quantity. "'  , `barre_code` = '" .$barecode. "'
+                    WHERE `item`.`item_id` = '" .$item_id. "'";
+                    var_dump($sql);
         $query = $conn->query($sql);
         if($query == true)
         {

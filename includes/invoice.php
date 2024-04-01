@@ -12,6 +12,7 @@ function write_invoice($invoice_id, $items_name, $quantities, $unit_price, $cust
   
     
     $templateProcessor = new TemplateProcessor("../PHPWord/invoice_template.docx");
+    
     $templateProcessor->setValue('INVOICENUM', $invoice_id);
     $templateProcessor->setValue('CUSTOMERNAME', $customer_name);
     $templateProcessor->setValue('DATE', date("Y/m/d"));
@@ -39,6 +40,7 @@ function write_invoice($invoice_id, $items_name, $quantities, $unit_price, $cust
     $pathToSave = '../PHPWord/invoice.docx';
     $templateProcessor->saveAs($pathToSave);
     //return 'http://'.$_SERVER['SERVER_ADDR'].'/stock-management/assets/invoice.docx';
+    
     return URLROOT.'/PHPWord/invoice.docx';
 } 
 
@@ -54,17 +56,23 @@ if (isset($_SESSION['role'])){
         //construct the invoice number
         $date = date("Ymd");
         //get the number of invoice today
-        $sql_number_invoice = "SELECT COUNT( * ) as nbr FROM `invoice` WHERE `date` = CURDATE()";
+        $sql_number_invoice = "SELECT MAX(`invoice_id`) as id FROM `invoice` WHERE `date` = CURDATE();";
         $res_number_invoice =  $conn->query($sql_number_invoice);
-        $nbr_invoice= 1 ;
+        $invoice_id= "" ;
         if( $row = $res_number_invoice->fetch_assoc()){
-            $nbr_invoice = $row['nbr'] + 1;
+            if($row['id'] == null){
+                $invoice_id = $date . "000001";
+            }else{
+               $invoice_id = $row['id'] + 1; 
+            }
+            
+        }else{
+            $invoice_id = $date . "000001";
         }
-        $invoice_id =  $date . sprintf('%06d', $nbr_invoice);
         
         //save  the invoice
         $sql_insert_invoice = "INSERT INTO `invoice`(`invoice_id`, `customer_id`, `date`, `time`, `user_id`) VALUES ('$invoice_id',$customer_id , CURDATE(), CURRENT_TIME(), " . $_SESSION['user_id'] . " )";
-         
+        
         if ($conn->query($sql_insert_invoice) === TRUE) {
             
             //save the invoice_item
@@ -133,20 +141,22 @@ if (isset($_SESSION['role'])){
         
         // increement the quantity
         $sql = "UPDATE `item` SET `item_quantity`= `item_quantity` + (SELECT `quantity` FROM `invoice_item` 
-                                    WHERE ".$invoice_id." AND `item_id` = ".$item_id.") WHERE `item_id` = ".$item_id;
+                                    WHERE invoice_id = '".$invoice_id."' AND `item_id` = ".$item_id.") WHERE `item_id` = ".$item_id;
+        
         if($conn ->query($sql)){
             $sql = "DELETE FROM `invoice_item` WHERE `invoice_id` = ".$invoice_id." AND `item_id` = ".$item_id;
             //use for MySQLi OOP
             if($conn->query($sql)){
                 echo 1;
-                $_SESSION['success'] = 'Item deleted successfully';
+                //$_SESSION['success'] = 'Item deleted successfully';
             }
             else
-            {
-                $_SESSION['error'] = 'Something went wrong in deleting member query. You need to delete all the buying and selling operations';
+            {   echo -1;
+                //$_SESSION['error'] = 'Something went wrong in deleting member query. You need to delete all the buying and selling operations';
             }
         }else{
-            $_SESSION['error'] = 'Something went wrong whene trying to increment the quantity.';
+            echo -1;
+            //$_SESSION['error'] = 'Something went wrong whene trying to increment the quantity.';
         }
     }
     else {

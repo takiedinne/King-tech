@@ -88,15 +88,16 @@ while ($cat_row = $cat_query->fetch_assoc()) {
 ?>
                             </select>
                         </div>
-
-                        <div class='mb-3'>
-                            <label for="reference" class="form-label">REFERENCE:</label>
-                            <input type='text' class='form-control' name='reference' id='reference'>
-
-                        </div>
-                        <div class='mb-3'>
-                            <label for="quantity" class="form-label">available quantity:</label>
-                            <input type='number' class='form-control' name='quantity' id="quantity">
+                        <div class='mb-3 row'>
+                            <div class="col-sm-6">
+                                <label for="quantity" class="form-label">available quantity:</label>
+                                <input type='number' class='form-control' name='quantity' id="quantity">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="barrecode" class="form-label">Barre code:</label>
+                                <input type='text' class='form-control' name='barrecode' id="barrecode">
+                            </div>
+                            
                         </div>
                         <div class='mb-3 row'>
                             <div class="col-sm-6">
@@ -310,11 +311,12 @@ while ($cat_row = $cat_query->fetch_assoc()) {
             success: function (data) {
                 $("input#item_name").val(data[0]);
                 $("#item_category").val(data[1]);
-                $("input#reference").val(data[2]);
+                //$("input#reference").val(data[2]);
                 $("input#quantity").val(data[3]);
                 $("input#pricemin").val(data[4]);
                 $("input#pricemax").val(data[5]);
                 $("input#item_id").val(item_id);
+                $("input#barrecode").val(data[6]);
             },
             error: function (resultat, statut, erreur) {
                 $("div#Edit").modal('hide');

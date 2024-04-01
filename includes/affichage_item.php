@@ -7,47 +7,66 @@ if (isset($_SESSION['role'])){
     // Suivi d'études par matière
     if (isset($_POST['get_edit_item_div'])) {
         
-        $sql_item = "SELECT i.item_id, i.item_name, i.item_cat, i.item_quantity, ip.price_max, ip.price_min, i.item_reference FROM item AS i LEFT JOIN item_price AS ip ON i.item_id = ip.item_id
+        $sql_item = "SELECT i.item_id, i.item_name, i.item_cat, i.item_quantity, ip.price_max, ip.price_min, i.item_reference, i.barre_code FROM item AS i LEFT JOIN item_price AS ip ON i.item_id = ip.item_id
                             WHERE i.item_id = ".$_POST['item_id']." and  (ip.`accreditation_date` = ( SELECT MAX( `accreditation_date` )
                             FROM  item_price AS ip2 
                             WHERE ip2.item_id = i.item_id ) OR ip.`accreditation_date` IS NULL)";
         $item_query = $conn->query($sql_item);
 		$row_item = $item_query->fetch_assoc(); 
 
-        $data = array($row_item['item_name'], $row_item['item_cat'], $row_item['item_reference'], $row_item['item_quantity'], $row_item['price_min'], $row_item['price_max']); 
+        $data = array($row_item['item_name'], $row_item['item_cat'], $row_item['item_reference'], $row_item['item_quantity'], $row_item['price_min'], $row_item['price_max'], $row_item['barre_code']); 
         echo json_encode($data);
     }
     elseif (isset($_POST['AutoCompleteItem'])){
 
         $textCherche = '%'.strtoupper($_POST['Item']).'%';
-        
-        $result = '';
-        $sql_item = " SELECT * FROM `item` as i, item_price as ip WHERE
-                            i.item_quantity > 0 AND
-                            i.item_id= ip.item_id and
-                            UPPER( `item_name` ) LIKE '$textCherche' AND ip.`accreditation_date` = ( SELECT MAX( `accreditation_date`)
-                                        FROM item_price AS ip2 WHERE ip2.item_id = i.item_id ) ";
 
-                              
+        #check if the item is barre code
+        $sql_item = "SELECT * FROM `item` as i, item_price as ip WHERE
+        i.item_quantity > 0 AND
+        i.item_id = ip.item_id and `barre_code` LIKE '$textCherche' AND ip.`accreditation_date` = ( SELECT MAX( `accreditation_date`)
+                    FROM item_price AS ip2 WHERE ip2.item_id = i.item_id ) ";
+
         $res_item = $conn->query($sql_item);
-        
-        while($row = $res_item->fetch_assoc()) {
+        $result = '';
+
+        if($row = $res_item->fetch_assoc()) {
             $item = $row['item_name'];
-            
-            $highlighted = preg_replace('/('.$_POST['Item'].')/i', '<b class="font-green-sharp">$0</b>', $item);
-            
             $result .= '<li style="cursor: pointer;cursor: hand;" id="" >
-                        <a  onclick="set_selection_item(\''.$row["item_name"].'\',\''.$row["item_id"].'\',\''.$row["price_max"].'\',\''.$row["price_min"].'\' , \''.$row["item_quantity"] .'\')">&nbsp;'.$highlighted.'</a>
+                        <a  onclick="set_selection_item(\''.$row["item_name"].'\',\''.$row["item_id"].'\',\''.$row["price_max"].
+                        '\',\''.$row["price_min"].'\' , \''.$row["item_quantity"] .'\')">&nbsp;'.$item.'</a>
                     </li>';
-        }
-        $res_item->close();
-        if(empty($result)) {
-            echo '<li style="cursor: pointer; cursor: hand;" >
-                <a style="color: red;">Aucun r&eacute;sultat trouv&eacute;!</a>
-            </li>';
-        } else {
             echo $result;
-        } 
+            $res_item->close();
+        }else {
+            
+            $sql_item = " SELECT * FROM `item` as i, item_price as ip WHERE
+                                i.item_quantity > 0 AND
+                                i.item_id= ip.item_id and
+                                UPPER( `item_name` ) LIKE '$textCherche' AND ip.`accreditation_date` = ( SELECT MAX( `accreditation_date`)
+                                            FROM item_price AS ip2 WHERE ip2.item_id = i.item_id ) ";
+    
+                                  
+            $res_item = $conn->query($sql_item);
+            
+            while($row = $res_item->fetch_assoc()) {
+                $item = $row['item_name'];
+                
+                $highlighted = preg_replace('/('.$_POST['Item'].')/i', '<b class="font-green-sharp">$0</b>', $item);
+                
+                $result .= '<li style="cursor: pointer;cursor: hand;" >
+                            <a  onclick="set_selection_item(\''.$row["item_name"].'\',\''.$row["item_id"].'\',\''.$row["price_max"].'\',\''.$row["price_min"].'\' , \''.$row["item_quantity"] .'\')">&nbsp;'.$highlighted.'</a>
+                        </li>';
+            }
+            $res_item->close();
+            if(empty($result)) {
+                echo '<li style="cursor: pointer; cursor: hand;" >
+                    <a style="color: red;">Aucun r&eacute;sultat trouv&eacute;!</a>
+                </li>';
+            } else {
+                echo $result;
+            } 
+        }
 
     }
     elseif (isset($_POST['AutoCompleteItemPurchase'])){
@@ -89,7 +108,7 @@ if (isset($_SESSION['role'])){
                     table2 AS (
                         SELECT
                         table1.item_id, table1.item_name, table1.item_quantity, table1.item_cat, table1.price_max, table1.price_min, its.unit_price, table1.row_number_price,
-                        ROW_NUMBER() OVER(PARTITION BY table1.item_id ORDER BY si.`date`, si.`time` DESC) AS row_number_supply
+                        ROW_NUMBER() OVER(PARTITION BY table1.item_id ORDER BY si.`date` DESC, si.`time` DESC) AS row_number_supply
                         FROM table1 
                         LEFT JOIN item_supply its ON
                                 its.item_id = table1.item_id LEFT JOIN supply_invoice as si ON si.supply_invoice_id = its.supply_invoice_id

@@ -1,5 +1,14 @@
 {
+    "name": "taki/king-tech",
+    "authors": [
+        {
+            "name": "Taki Eddine HARBI",
+            "email": "38916249+takiedinne@users.noreply.github.com"
+        }
+    ],
     "require": {
-        "phpoffice/phpword": "^0.18.3"
+        "phpoffice/phpword": "^1.2",
+        "tecnickcom/tcpdf": "^6.7",
+        "picqer/php-barcode-generator": "^2.4"
     }
 }

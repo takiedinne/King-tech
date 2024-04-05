@@ -140,6 +140,7 @@ if (isset($_SESSION['role'])){
                                 <button  id ='" . $row['item_id'] . "'  class='edit_item_button btn btn-success btn-sm' data-bs-toggle= 'modal' data-bs-target= '#Edit' onclick = 'edit_item(".$row['item_id'].")'><span class='fas fa-edit'></span></button>
                                 <button  id = 'popover_delete_" . $row['item_id'] . "' tabindex='0' class='btn btn-danger btn-sm' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='right' data-bs-content='test' onclick='delete_item_click(".$row['item_id'].", \"".$row['item_name']."\")'><span class='fas fa-trash'></span></button>
                                 <button  id ='getSup" . $row['item_id'] . "'  class='getSuppOpt btn btn-primary btn-sm' data-bs-toggle= 'modal' data-bs-target= '#SuppOpt' onclick = 'getSupOpt(".$row['item_id'].")'><span class='fa-sharp fa-solid fa-clock-rotate-left'></span></button>
+                                <button  id ='printBarCode" . $row['item_id'] . "'  class='printBarClass btn btn-secondary btn-sm' data-bs-toggle= 'modal' data-bs-target= '#printBarCode' onclick = 'getBarCode(".$row['item_id'].")'><span class='fa-sharp fa-solid fa-barcode'></span></button>
                             </td>
                         </tr>";
                 $i++;

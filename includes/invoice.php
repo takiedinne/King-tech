@@ -5,6 +5,7 @@ include_once('../db.php');
 LogInCheck();
 
 require_once('../vendor/autoload.php');
+
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\TemplateProcessor;
 
@@ -17,7 +18,7 @@ function write_invoice($invoice_id, $items_name, $quantities, $unit_price, $cust
     $templateProcessor->setValue('CUSTOMERNAME', $customer_name);
     $templateProcessor->setValue('DATE', date("Y/m/d"));
     $templateProcessor->setValue('CASHIER', $_SESSION['user_name']);
-
+    
     $templateProcessor->cloneRow('ITEM', count($items_name));
     $i = 1;
     $total = 0;
@@ -48,6 +49,7 @@ if (isset($_SESSION['role'])){
     //var_dump($_POST);
     // Suivi d'études par matière
     if (isset($_POST['get_invoice'])) {
+        
         $items_id = $_POST['items_id'];
         $quantities = $_POST['quantities'];
         $unit_prices = $_POST['unit_prices'];
@@ -124,7 +126,6 @@ if (isset($_SESSION['role'])){
                     $customerName = $row['customer_firstname'] .' '. $row['customer_surname'];
                 }
                 echo write_invoice($invoice_id, $items_names, $quantities, $unit_prices, $customerName); 
-                 
             } else {
                 echo -1;
             }

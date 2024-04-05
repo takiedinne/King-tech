@@ -349,4 +349,25 @@ while ($cat_row = $cat_query->fetch_assoc()) {
         });
 
     }
+    function getBarCode(item_id) {
+        $.ajax({
+            url: "actions/__BarCode.php",
+            type: "POST",
+            data: {
+                BarCode: "1",
+                item_id: item_id
+            },
+
+            success: function (data) {
+
+              window.location = data;
+            },
+            error: function (resultat, statut, erreur) {
+                $("div#Edit").modal('hide');
+                create_toast("Error", "Cannot charge Edit form somthing is wrong!");
+                
+            }
+        });
+
+    }
 </script>

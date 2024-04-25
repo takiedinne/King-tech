@@ -11,6 +11,15 @@ include_once('db.php');
 flash();
 ?>
 
+<style>
+        .threshold-warning {
+            background-color: #ffcc99 !important; /* Light red */
+        }
+
+        .threshold-danger {
+            background-color: #ffcccc !important; /* Light red */
+        }
+</style>
 <main id="main">
     <!-- ======= New Sale Section ======= -->
     <section id="Items_section" class="contact sections-bg">
@@ -40,6 +49,7 @@ flash();
                                     <th>PRICE MAX</th>
                                     <th>PRICE MIN</th>
                                     <th>ACTIONS</th>
+                                    <th>threshold</th>
                                 </tr>
 
                             </thead>
@@ -74,19 +84,25 @@ flash();
                             <label for="item_name" class="form-label">ITEM:</label>
                             <input type='text' class='form-control' name='item_name' id="item_name">
                         </div>
-                        <div class='mb-3'>
-                            <label for="item_category" class="form-label">CATEGORY:</label>
-                            <select class='form-control' aria-label='Default select example' id="item_category"
-                                name="item_category">
-                                <?php
-$cat_sql = 'SELECT * FROM item_category WHERE 1';
-$cat_query = $conn->query($cat_sql);
+                        <div class='mb-3 row'>
+                            <div class="col-sm-6">
+                                <label for="item_category" class="form-label">CATEGORY:</label>
+                                <select class='form-control' aria-label='Default select example' id="item_category"
+                                    name="item_category">
+                                    <?php
+                                        $cat_sql = 'SELECT * FROM item_category WHERE 1';
+                                        $cat_query = $conn->query($cat_sql);
 
-while ($cat_row = $cat_query->fetch_assoc()) {
-    echo "<option value='" . $cat_row['cat_id'] . "' >" . $cat_row['category_name'] . "</option>";
-}
-?>
-                            </select>
+                                        while ($cat_row = $cat_query->fetch_assoc()) {
+                                            echo "<option value='" . $cat_row['cat_id'] . "' >" . $cat_row['category_name'] . "</option>";
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="barrecode" class="form-label">Barre code:</label>
+                                <input type='text' class='form-control' name='barrecode' id="barrecode">
+                            </div>
                         </div>
                         <div class='mb-3 row'>
                             <div class="col-sm-6">
@@ -94,8 +110,8 @@ while ($cat_row = $cat_query->fetch_assoc()) {
                                 <input type='number' class='form-control' name='quantity' id="quantity">
                             </div>
                             <div class="col-sm-6">
-                                <label for="barrecode" class="form-label">Barre code:</label>
-                                <input type='text' class='form-control' name='barrecode' id="barrecode">
+                                <label for="threshold" class="form-label">Notify After:</label>
+                                <input type='text' class='form-control' name='threshold' id="threshold">
                             </div>
                             
                         </div>
@@ -144,13 +160,13 @@ while ($cat_row = $cat_query->fetch_assoc()) {
                             <select class='form-control' aria-label='Default select example' id="item_category"
                                 name="item_category" required>
                                 <?php
-$cat_sql = 'SELECT * FROM item_category WHERE 1';
-$cat_query = $conn->query($cat_sql);
+                    $cat_sql = 'SELECT * FROM item_category WHERE 1';
+                    $cat_query = $conn->query($cat_sql);
 
-while ($cat_row = $cat_query->fetch_assoc()) {
-    echo "<option value='" . $cat_row['cat_id'] . "' >" . $cat_row['category_name'] . "</option>";
-}
-?>
+                    while ($cat_row = $cat_query->fetch_assoc()) {
+                        echo "<option value='" . $cat_row['cat_id'] . "' >" . $cat_row['category_name'] . "</option>";
+                    }
+                    ?>
                             </select>
                         </div>
 
@@ -237,9 +253,37 @@ while ($cat_row = $cat_query->fetch_assoc()) {
 
             success: function (data) {
                 $("tbody#AllItemsTbody").html(data);
-                $("#AllItemsTable").DataTable();
+                $("#AllItemsTable").DataTable({
+                    "columnDefs": [
+                        {
+                            target: 8,
+                            visible: false,
+                            searchable: false
+                        },
+                        {
+                            target: 7,
+                            width: "20%"
+                        }
+                    ],
+                    "rowCallback": function(row, data) {
+                        // Replace 'column_index' with the index of the column you want to check
+                        var columnValue = data[3]; // Get the value of the column for this row
+                        var threshold = data[8]; 
+                        // Add conditions to change row color based on column value
+                        if (columnValue <= threshold && columnValue > 0) {
+                            $(row).addClass('threshold-warning');
+                        } else if (columnValue == 0) {
+                            $(row).addClass('threshold-danger');
+                        }
+                        // Add more conditions as needed
+
+                        // Replace 'color1' and 'color2' with your custom CSS class names for each color
+                    }
+                });
                 $("#AllItemsTable_filter").append("<span>   </span>");
                 $("#AllItemsTable_filter").append("<button  class=\"btn btn-danger\"  data-bs-toggle=\"modal\" data-bs-target=\"#new_item\" ><i class=\"fas fa-plus pr-2\"aria-hidden=\"true\"></i> New Item</button>");
+                $("#AllItemsTable_filter").append("<span>   </span>");
+                $("#AllItemsTable_filter").append("<button class=\"btn btn-primary\" onclick='printShooping()' > Print Shooping List</button>");
 
             },
             error: function (resultat, statut, erreur) {
@@ -311,12 +355,13 @@ while ($cat_row = $cat_query->fetch_assoc()) {
             success: function (data) {
                 $("input#item_name").val(data[0]);
                 $("#item_category").val(data[1]);
-                //$("input#reference").val(data[2]);
+                
                 $("input#quantity").val(data[3]);
                 $("input#pricemin").val(data[4]);
                 $("input#pricemax").val(data[5]);
                 $("input#item_id").val(item_id);
                 $("input#barrecode").val(data[6]);
+                $("input#threshold").val(data[7]);
             },
             error: function (resultat, statut, erreur) {
                 $("div#Edit").modal('hide');
@@ -356,6 +401,26 @@ while ($cat_row = $cat_query->fetch_assoc()) {
             data: {
                 BarCode: "1",
                 item_id: item_id
+            },
+
+            success: function (data) {
+
+              window.location = data;
+            },
+            error: function (resultat, statut, erreur) {
+                $("div#Edit").modal('hide');
+                create_toast("Error", "Cannot charge Edit form somthing is wrong!");
+                
+            }
+        });
+
+    }
+    function printShooping() {
+        $.ajax({
+            url: "actions/__ShoopingList.php",
+            type: "POST",
+            data: {
+                ShoopingList: "1"
             },
 
             success: function (data) {

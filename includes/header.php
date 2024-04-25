@@ -20,9 +20,8 @@
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link href="assets/fromInternet/googleapsis.css" rel="stylesheet">
+    <link href="assets/fromInternet/fontawsome.css" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -37,7 +36,7 @@
     <title><?php echo SITENAME; ?></title>
     <script src="assets/jquery-3.6.0/jquery-3.6.0.js"></script>
     <script src="assets/DataTables-1.12.1/datatables.min.js"></script>
-    <script src="https://kit.fontawesome.com/422978ac6d.js" crossorigin="anonymous"></script>
+    <script src="assets/fromInternet/fontawsome-422978ac6d.js"></script>
 
     <!-- Vendor JS Files -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -53,10 +52,7 @@
     <!-- what I added manualy -->
 </head>
 <style>
-    /* #main_div {
-    background-image: url("assets/images/background.webp");
-    height: 100vh;
-} */
+    
 
     /* Height for devices larger than 576px */
     @media (min-width: 992px) {

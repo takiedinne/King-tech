@@ -7,12 +7,11 @@
     {
         // Sanitize POST array
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        
-        var_dump($_POST);
-
+    
         //trim the values
         $item_id = $_POST['item_id'];
         $item_name = trim($_POST['item_name']);
+        
         $item_cat = trim($_POST['item_category']);
         $item_ref = trim($_POST['reference']);
         $pricemin = $_POST['pricemin'];
@@ -20,13 +19,25 @@
         $quantity = $_POST['quantity'];
         $barecode = $_POST['barrecode'];
         
+        /* $characters = str_split($item_name);
+
+        foreach ($characters as $character) {
+            echo $character . " => ". ord($character)."\n";
+        } */
         
-        
-        $sql = " UPDATE `item` SET `item_name` = '" .$item_name. "
+        /* $sql = " UPDATE `item` SET `item_name` = '" .$item_name. "
                     ',`item_cat` = '" .$item_cat."', `item_reference` = '" .$item_ref. "
                     ', `item_quantity` = '" .$quantity. "'  , `barre_code` = '" .$barecode. "'
-                    WHERE `item`.`item_id` = '" .$item_id. "'";
-                    var_dump($sql);
+                    WHERE `item`.`item_id` = '" .$item_id. "'"; */
+        $sql = 'UPDATE `item` SET `item_name` = \'' . $item_name . '\',
+                          `item_cat` = \'' . $item_cat . '\', 
+                          `item_reference` = \'' . $item_ref . '\',
+                          `item_quantity` = \'' . $quantity . '\',
+                          `barre_code` = \'' . $barecode . '\'
+                          WHERE `item`.`item_id` = \'' . $item_id . '\'';
+
+        
+        //var_dump($sql);
         $query = $conn->query($sql);
         if($query == true)
         {

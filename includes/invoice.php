@@ -9,7 +9,7 @@ require_once('../vendor/autoload.php');
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\TemplateProcessor;
 
-function write_invoice($invoice_id, $items_name, $quantities, $unit_price, $customer_name){
+function write_invoice($invoice_id, $items_name, $quantities, $unit_price, $customer_name, $payment){
   
     
     $templateProcessor = new TemplateProcessor("../PHPWord/invoice_template.docx");
@@ -34,8 +34,8 @@ function write_invoice($invoice_id, $items_name, $quantities, $unit_price, $cust
         $i+= 1;
     }
     $templateProcessor->setValue('TOTAL', $total);
-    $templateProcessor->setValue('PAID', $total);
-    $templateProcessor->setValue('REST', '0,0 DA');
+    $templateProcessor->setValue('PAID', $payment);
+    $templateProcessor->setValue('REST', $total - $payment);
     $templateProcessor->setValue('NPROD', count($items_name));
     
     $pathToSave = '../PHPWord/invoice.docx';
@@ -54,6 +54,8 @@ if (isset($_SESSION['role'])){
         $quantities = $_POST['quantities'];
         $unit_prices = $_POST['unit_prices'];
         $customer_id = $_POST['customer_id'];
+        $payment = $_POST['payment'];
+
         // save the invoice
         //construct the invoice number
         $date = date("Ymd");
@@ -125,7 +127,15 @@ if (isset($_SESSION['role'])){
                 if($row = $resCustomerName->fetch_assoc()){
                     $customerName = $row['customer_firstname'] .' '. $row['customer_surname'];
                 }
-                echo write_invoice($invoice_id, $items_names, $quantities, $unit_prices, $customerName); 
+                
+                 // add the payement
+                $sqlPayment = "INSERT INTO `invoice_payment`(`invoice_id`, `date`, `time`, `payment`) VALUES ('$invoice_id', CURDATE(),CURRENT_TIME(), " . $payment . ")";
+                
+                if ($conn->query($sqlPayment) === TRUE) {
+                    echo write_invoice($invoice_id, $items_names, $quantities, $unit_prices, $customerName, $payment); 
+                } else {
+                    echo -1;
+                }
             } else {
                 echo -1;
             }
@@ -158,6 +168,18 @@ if (isset($_SESSION['role'])){
         }else{
             echo -1;
             //$_SESSION['error'] = 'Something went wrong whene trying to increment the quantity.';
+        }
+    }
+    elseif (isset($_POST['add_payment'])){
+
+        $invoice_id = $_POST['invoice_id'];
+        $payment = $_POST['payment_amount'];
+        
+        $sql = "INSERT INTO `invoice_payment`(`invoice_id`, `date`, `time`, `payment`) VALUES ('$invoice_id', CURDATE(),CURRENT_TIME(), " . $payment . ")";
+        if ($conn->query($sql) === TRUE) {
+            echo 1;
+        } else {
+            echo -1;
         }
     }
     else {

@@ -18,7 +18,7 @@
         $pricemax = $_POST['pricemax'];
         $quantity = $_POST['quantity'];
         $barecode = $_POST['barrecode'];
-        
+        $threshold = $_POST['threshold'];
         /* $characters = str_split($item_name);
 
         foreach ($characters as $character) {
@@ -33,7 +33,8 @@
                           `item_cat` = \'' . $item_cat . '\', 
                           `item_reference` = \'' . $item_ref . '\',
                           `item_quantity` = \'' . $quantity . '\',
-                          `barre_code` = \'' . $barecode . '\'
+                          `barre_code` = \'' . $barecode . '\',
+                          `threshold` = \'' . $threshold . '\'
                           WHERE `item`.`item_id` = \'' . $item_id . '\'';
 
         

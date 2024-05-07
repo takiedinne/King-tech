@@ -53,7 +53,7 @@ require_once 'includes/header.php';
 
 <main id="main">
     <!-- ======= New Sale Section ======= -->
-    <section id="new_sale" class="contact sections-bg" >
+    <section id="new_sale" class="contact sections-bg">
         <div class="container" data-aos="fade-up">
 
             <div class="section-header">
@@ -72,18 +72,21 @@ require_once 'includes/header.php';
                             <div class="col-md-10  mt-3 mt-md-0">
                                 <input id="customer_id" type="text" hidden="hidden" value=-1>
                                 <div class="input-group mb-3">
-                                    <input id="customer_name" type="text" class="form-control AutoCompleteCustomer" name="customer" placeholder="Enter Customer name">
+                                    <input id="customer_name" type="text" class="form-control AutoCompleteCustomer"
+                                        name="customer" placeholder="Enter Customer name">
                                     <div class="input-group-append">
-                                        <span class="input-group-text square_button" data-bs-toggle="modal" data-bs-target="#new_customer">New</span>
+                                        <span class="input-group-text square_button" data-bs-toggle="modal"
+                                            data-bs-target="#new_customer">New</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="dropdown">
-                                    <ul id="listeCustomer" class="dropdown-menu" aria-labelledby="customer_name" style="max-height: 250px;  display: none; position:absolute; margin:0px; width:100%; left:auto;">
+                                    <ul id="listeCustomer" class="dropdown-menu" aria-labelledby="customer_name"
+                                        style="max-height: 250px;  display: none; position:absolute; margin:0px; width:100%; left:auto;">
 
                                     </ul>
                                 </div>
-                                
+
                             </div>
                         </div>
 
@@ -93,9 +96,11 @@ require_once 'includes/header.php';
                             </div>
                             <div class="col-md-4 ">
                                 <input id="item_id" type="text" hidden="hidden">
-                                <input id="item_name" type="text" class="form-control AutoCompleteItem mb-3" name="item" placeholder="Enter item name" required>
+                                <input id="item_name" type="text" class="form-control AutoCompleteItem mb-3" name="item"
+                                    placeholder="Enter item name" required>
                                 <div class="dropdown">
-                                    <ul id="listeItem" class="dropdown-menu" aria-labelledby="item_name" style="max-height: 250px; overflow: scroll; display: none; position:absolute; margin:0px; width:100%; left:auto;">
+                                    <ul id="listeItem" class="dropdown-menu" aria-labelledby="item_name"
+                                        style="max-height: 250px; overflow: scroll; display: none; position:absolute; margin:0px; width:100%; left:auto;">
                                     </ul>
                                 </div>
                             </div>
@@ -104,7 +109,8 @@ require_once 'includes/header.php';
                                 <h4 class="control-label modal-label">QUANTITY:</h4>
                             </div>
                             <div class="col-md-4 ">
-                                <input id="item_quantity" type="number" class="form-control" placeholder="quantity" required>
+                                <input id="item_quantity" type="number" class="form-control" placeholder="quantity"
+                                    required>
                             </div>
                         </div>
 
@@ -114,7 +120,8 @@ require_once 'includes/header.php';
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
-                                    <input id="item_price" type="number" class="form-control" placeholder="price" required>
+                                    <input id="item_price" type="number" class="form-control" placeholder="price"
+                                        required>
                                     <div class="input-group-append">
                                         <span class="input-group-text square_span">DA</span>
                                     </div>
@@ -128,9 +135,10 @@ require_once 'includes/header.php';
                                 <button id="add_item_button" type="submit">Add Item</button>
                             </div>
                         </div>
-                        
+
                         <div class="row">
-                            <table id="invoice_table" class="table table-hover table-bordered table-striped table-responsive">
+                            <table id="invoice_table"
+                                class="table table-hover table-bordered table-striped table-responsive">
                                 <thead>
                                     <tr>
                                         <th>ITEM</td>
@@ -152,8 +160,10 @@ require_once 'includes/header.php';
                             </div>
 
                             <div class="col-md-4">
-                                <button type="button" id="clear_invoice"><span class='fa-solid fa-xmark'></span> Clear</button>
-                                <button type="button" id="print_invoice"><span class='fa-solid fa-print'></span> Print</a>
+                                <button type="button" id="clear_invoice"><span class='fa-solid fa-xmark'></span>
+                                    Clear</button>
+                                <button type="button" id="print_invoice"><span class='fa-solid fa-print'></span>
+                                    Print</a>
                             </div>
                         </div>
                     </div>
@@ -165,7 +175,7 @@ require_once 'includes/header.php';
     </section><!-- End New sale Section -->
 
     <!-- ======= New supply Section ======= -->
-    <section id="new_supply" class="contact" >
+    <section id="new_supply" class="contact">
         <div class="container" data-aos="fade-up">
 
             <div class="section-header">
@@ -176,95 +186,108 @@ require_once 'includes/header.php';
             <div class="row gx-lg-0 gy-4">
 
                 <div class="col-lg-12">
-                        <div class="php-email-form">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <h4> Supplier :</h1>
-                                </div>
-                                <div class="col-md-10 mt-3 mt-md-0">
-                                    <input id="supplier_id" type="text" hidden="hidden" value=-1>
-                                    <div class="input-group mb-3">
-                                        <input id="supplier_name" type="text" class="form-control AutoCompleteSupplier" name="item" placeholder="Enter Supplier name">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text square_button"  data-bs-toggle="modal" data-bs-target="#new_supplier">New</span>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown">
-                                        <ul id="listeSupplier" class="dropdown-menu" aria-labelledby="supplier_name" style="max-height: 250px;  display: none; position:absolute; margin:0px; width:100%; left:auto;">
-
-                                        </ul>
-                                    </div>
-                                </div>
+                    <div class="php-email-form">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h4> Supplier :</h1>
                             </div>
-                            <div class="row ">
-                                <div class="col-md-2  mt-3 mt-md-0">
-                                    <h4 class="control-label modal-label">ITEM:</h4>
-                                </div>
-                                <div class="col-md-4 ">
-                                    <input id="purchase_item_id" type="text" hidden="hidden">
-                                    <div class="input-group mb-3">
-                                        <input id="purchase_item_name" autocomplete="false" type="text" class="form-control AutoCompleteItemPurchase" name="item" placeholder="Enter item name" required>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text square_button" data-bs-toggle="modal" data-bs-target="#new_item">New</span>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown">
-                                        <ul id="listeItemPurchase" class="dropdown-menu" aria-labelledby="purchase_item_name" style="max-height: 250px; overflow: scroll; display: none; position:absolute; margin:0px; width:100%; left:auto;">
-                                        </ul>
+                            <div class="col-md-10 mt-3 mt-md-0">
+                                <input id="supplier_id" type="text" hidden="hidden" value=-1>
+                                <div class="input-group mb-3">
+                                    <input id="supplier_name" type="text" class="form-control AutoCompleteSupplier"
+                                        name="item" placeholder="Enter Supplier name">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text square_button" data-bs-toggle="modal"
+                                            data-bs-target="#new_supplier">New</span>
                                     </div>
                                 </div>
+                                <div class="dropdown">
+                                    <ul id="listeSupplier" class="dropdown-menu" aria-labelledby="supplier_name"
+                                        style="max-height: 250px;  display: none; position:absolute; margin:0px; width:100%; left:auto;">
 
-                                <div class="col-md-2 ">
-                                    <h4 class="control-label modal-label">QUANTITY:</h4>
-                                </div>
-                                <div class="col-md-4 ">
-                                    <input id="item_quantity_purchase" type="number" class="form-control" placeholder="quantity" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <h4 class="control-label modal-label">PRICE:</h4>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="input-group mb-3">
-                                        <input id="item_price_purchase" type="number" class="form-control" placeholder="price" required>
-                                        <span class="input-group-text square_span">DA</span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                </div>
-                                <div class="col-md-4">
-                                    <button id="add_item_button_purchase" type="button">Add Item</button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <table id="purchase_table" class="table table-hover table-bordered table-striped table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th>ITEM</td>
-                                            <th>QUANTITY</td>
-                                            <th>UNIT PRICE</td>
-                                            <th>ACTIONS</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="purchase_tbody">
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8" style="text-align: left;">
-                                    <h4><b>Total:
-                                            <span class="label label-info" id="purchase_total">0,00 DA</span></b></h4>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <button type="button" id="clear_purchase"><span class='fa-solid fa-xmark'></span> Clear</button>
-                                    <button type="submit" id="submit_purchase"><span class='fa-solid fa-print'></span> Submit</a>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
+                        <div class="row ">
+                            <div class="col-md-2  mt-3 mt-md-0">
+                                <h4 class="control-label modal-label">ITEM:</h4>
+                            </div>
+                            <div class="col-md-4 ">
+                                <input id="purchase_item_id" type="text" hidden="hidden">
+                                <div class="input-group mb-3">
+                                    <input id="purchase_item_name" autocomplete="false" type="text"
+                                        class="form-control AutoCompleteItemPurchase" name="item"
+                                        placeholder="Enter item name" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text square_button" data-bs-toggle="modal"
+                                            data-bs-target="#new_item">New</span>
+                                    </div>
+                                </div>
+                                <div class="dropdown">
+                                    <ul id="listeItemPurchase" class="dropdown-menu"
+                                        aria-labelledby="purchase_item_name"
+                                        style="max-height: 250px; overflow: scroll; display: none; position:absolute; margin:0px; width:100%; left:auto;">
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 ">
+                                <h4 class="control-label modal-label">QUANTITY:</h4>
+                            </div>
+                            <div class="col-md-4 ">
+                                <input id="item_quantity_purchase" type="number" class="form-control"
+                                    placeholder="quantity" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h4 class="control-label modal-label">PRICE:</h4>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <input id="item_price_purchase" type="number" class="form-control"
+                                        placeholder="price" required>
+                                    <span class="input-group-text square_span">DA</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-md-4">
+                                <button id="add_item_button_purchase" type="button">Add Item</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table id="purchase_table"
+                                class="table table-hover table-bordered table-striped table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>ITEM</td>
+                                        <th>QUANTITY</td>
+                                        <th>UNIT PRICE</td>
+                                        <th>ACTIONS</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="purchase_tbody">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8" style="text-align: left;">
+                                <h4><b>Total:
+                                        <span class="label label-info" id="purchase_total">0,00 DA</span></b></h4>
+                            </div>
+
+                            <div class="col-md-4">
+                                <button type="button" id="clear_purchase"><span class='fa-solid fa-xmark'></span>
+                                    Clear</button>
+                                <button type="submit" id="submit_purchase"><span class='fa-solid fa-print'></span>
+                                    Submit</a>
+                            </div>
+                        </div>
+                    </div>
                 </div><!-- End Contact Form -->
 
             </div>
@@ -274,7 +297,8 @@ require_once 'includes/header.php';
 
 
     <!-- new Customer modal-->
-    <div class="modal fade php-email-form" id="new_customer" tabindex="-1" aria-labelledby="newCustomerLabel" aria-hidden="true">
+    <div class="modal fade php-email-form" id="new_customer" tabindex="-1" aria-labelledby="newCustomerLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -293,14 +317,14 @@ require_once 'includes/header.php';
                                 <input type='text' class='form-control' id='new_customer_surname' required>
                             </div>
                         </div>
-                        
+
                         <div class='mb-3'>
                             <label for="new_customer_address" class="form-label">Address:</label>
-                            <input type='text' class='form-control' id='new_customer_address' >
+                            <input type='text' class='form-control' id='new_customer_address'>
                         </div>
                         <div class='mb-3'>
-                                <label for="new_customer_telephone" class="form-label">Telephone:</label>
-                                <input type='tel' class='form-control'  id="new_customer_telephone">
+                            <label for="new_customer_telephone" class="form-label">Telephone:</label>
+                            <input type='tel' class='form-control' id="new_customer_telephone">
                         </div>
                         <div class="mb-3">
                             <label for="new_customer_email" class="form-label">E-mail:</label>
@@ -318,11 +342,13 @@ require_once 'includes/header.php';
             </div>
         </div>
     </div>
-    <!-- new suuplier-->
-    <div class="modal fade php-email-form" id="new_supplier" tabindex="-1" aria-labelledby="newLabel" aria-hidden="true">
+
+    <!-- new suplier-->
+    <div class="modal fade php-email-form" id="new_supplier" tabindex="-1" aria-labelledby="newLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                
+
                 <div class="modal-header">
                     <h5 class="modal-title" id="EditLabel">Add New Supplier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -332,22 +358,24 @@ require_once 'includes/header.php';
                         <div class='mb-3 row'>
                             <div class="col-md-6">
                                 <label for="supplier_firstname" class="form-label">First name:</label>
-                                <input type='text' class='form-control' name='supplier_firstname' id="supplier_firstname" required>
+                                <input type='text' class='form-control' name='supplier_firstname'
+                                    id="supplier_firstname" required>
                             </div>
                             <div class='col-md-6'>
                                 <label for="supplier_surname" class="form-label">Surname:</label>
-                                <input type='text' class='form-control' name='supplier_surname' id='supplier_surname' required>
+                                <input type='text' class='form-control' name='supplier_surname' id='supplier_surname'
+                                    required>
                             </div>
                         </div>
-                        
+
                         <div class='mb-3'>
                             <label for="supplier_address" class="form-label">Address:</label>
                             <input type='text' class='form-control' name='supplier_address' id="supplier_address">
                         </div>
                         <div class='mb-3'>
-                            
-                                <label for="supplier_telephone" class="form-label">Telephone:</label>
-                                <input type='tel' class='form-control' name='supplier_telephone' id="supplier_telephone">
+
+                            <label for="supplier_telephone" class="form-label">Telephone:</label>
+                            <input type='tel' class='form-control' name='supplier_telephone' id="supplier_telephone">
                         </div>
                         <div class="mb-3">
                             <label for="supplier_email" class="form-label">E-mail:</label>
@@ -368,7 +396,8 @@ require_once 'includes/header.php';
     </div>
 
     <!-- new Item-->
-    <div class="modal fade php-email-form" id="new_item" tabindex="-1" aria-labelledby="NewItemLabel" aria-hidden="true">
+    <div class="modal fade php-email-form" id="new_item" tabindex="-1" aria-labelledby="NewItemLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form method="POST" action="./actions/__add_itemModel.php">
@@ -403,7 +432,7 @@ require_once 'includes/header.php';
                                 <input type='text' class='form-control' name='reference' id='add_reference'>
 
                             </div>
-                           
+
                             <div class='mb-3 row'>
                                 <div class="col-md-6">
                                     <label for="pricemin" class="form-label">price min:</label>
@@ -413,12 +442,13 @@ require_once 'includes/header.php';
                                     <label for="pricemax" class="form-label">price max:</label>
                                     <input type='number' class='form-control' name='pricemax' id="pricemax">
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Cancel</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><i
+                                class="fas fa-times"></i> Cancel</button>
                         <button type="button" id="new_item" class="btn btn-success"><i class="fas fa-check"></i>Add</a>
                     </div>
                 </form>
@@ -426,23 +456,59 @@ require_once 'includes/header.php';
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="Confirm_invoice_modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="EditLabel">Confirm Invoice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row form-group">
+                            <h4><b>Total:
+                                    <span class="label label-info" id="invoice_total_confirm">0,00 DA</span></b></h4>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4 form-group mt-3 mt-md-0">
+                                <h4><b>Payment:</b></h4>
+                            </div>
+                            <div class="col-sm-8 form-group mt-3 mt-md-0">
+                                <input type="number" class="form-control" id="payment" placeholder="Payment" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary button_green_per" id="confirm_print_bttn"><span
+                            class='fa-solid fa-print'></span> print</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </main><!-- End #main -->
 
 
 <?php require_once 'includes/footer.php';?>
 <script>
-    $("#new_saleIcon").click(function () {
+    $("#new_saleIcon").click(function() {
         $("section#new_sale").show();
         $("section#new_supply").hide();
     });
 
-    $("#new_supplyIcon").click(function () {
+    $("#new_supplyIcon").click(function() {
         $("section#new_sale").hide();
         $("section#new_supply").show();
     });
 
-    $(document).ready(function () {
-        
+    $(document).ready(function() {
+
         $('#invoice_table').DataTable({
             searching: false,
             paging: false,
@@ -461,7 +527,7 @@ require_once 'includes/header.php';
         $("section#new_sale").hide();
     });
     $("input.AutoCompleteCustomer").on({
-        keyup: function () {
+        keyup: function() {
             var min_long = 2;
             var motcle = $(this).val();
             if (motcle.length >= min_long) {
@@ -473,14 +539,16 @@ require_once 'includes/header.php';
                     url: "includes/affichage_customer.php",
                     type: "POST",
                     data: $ajaxData,
-                    success: function (data) {
+                    success: function(data) {
                         $("ul#listeCustomer").show();
                         $("ul#listeCustomer").html(data);
                         // $("ul#listeElevesDossierScolaire").css("top", $("input#rechercheEleveDossierScolaire").prop("scrollTop")+28);
 
                     },
-                    error: function (resultat, statut, erreur) {
-                        toastr.error("Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.", "Erreur Serveur!");
+                    error: function(resultat, statut, erreur) {
+                        toastr.error(
+                            "Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.",
+                            "Erreur Serveur!");
                     }
                 });
             } else {
@@ -498,7 +566,7 @@ require_once 'includes/header.php';
 
     }
 
-    $("input#item_quantity").change(function () {
+    $("input#item_quantity").change(function() {
         var inputVar = $("input#item_quantity")
         var max_val = inputVar.attr("max")
         if (parseFloat(inputVar.val()) > parseFloat(max_val)) {
@@ -506,7 +574,7 @@ require_once 'includes/header.php';
             // put alert
         }
     });
-    $("input#item_price").change(function () {
+    $("input#item_price").change(function() {
         var inputVar = $("input#item_price")
         var min_val = inputVar.attr("min_val")
         if (parseFloat(inputVar.val()) < parseFloat(min_val)) {
@@ -516,7 +584,7 @@ require_once 'includes/header.php';
     });
 
     $("input.AutoCompleteItem").on({
-        keyup: function () {
+        keyup: function() {
 
             var min_long = 2;
             var motcle = $(this).val();
@@ -529,7 +597,7 @@ require_once 'includes/header.php';
                     url: "includes/affichage_item.php",
                     type: "POST",
                     data: $ajaxData,
-                    success: function (data) {
+                    success: function(data) {
 
                         $("ul#listeItem").show();
                         $("ul#listeItem").html(data);
@@ -537,8 +605,10 @@ require_once 'includes/header.php';
                         // $("ul#listeElevesDossierScolaire").css("top", $("input#rechercheEleveDossierScolaire").prop("scrollTop")+28);
 
                     },
-                    error: function (resultat, statut, erreur) {
-                        toastr.error("Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.", "Erreur Serveur!");
+                    error: function(resultat, statut, erreur) {
+                        toastr.error(
+                            "Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.",
+                            "Erreur Serveur!");
                     }
                 });
             } else {
@@ -553,7 +623,9 @@ require_once 'includes/header.php';
         $("input#item_id").val(itemId);
         $("ul#listeItem").hide();
         $("input#item_quantity").val(1);
-        $("input#item_quantity").attr({ "max": availableQty });
+        $("input#item_quantity").attr({
+            "max": availableQty
+        });
         $("input#item_price").val(price_max);
         $("input#item_price").attr({
             "min_val": price_min
@@ -567,13 +639,14 @@ require_once 'includes/header.php';
 
     function count_invoice_total() {
         var sum = 0.0;
-        $("tbody#invoice_tbody > tr").each(function (index) {
+        $("tbody#invoice_tbody > tr").each(function(index) {
             //sum = sum + parseFloat($(this).children("td").eq(1).text()) * parseFloat(this.children("td").eq(2).text()); 
-            sum = sum + parseFloat($(this).children("td").eq(1).text()) * parseFloat($(this).children("td").eq(2).text());
+            sum = sum + parseFloat($(this).children("td").eq(1).text()) * parseFloat($(this).children("td").eq(2)
+                .text());
         });
         $("span#invoice_total").html(sum + " DA")
     }
-    $("button#add_item_button").click(function () {
+    $("button#add_item_button").click(function() {
 
 
         if ($("tbody#invoice_tbody > tr.odd").length) {
@@ -589,7 +662,8 @@ require_once 'includes/header.php';
         var item_name = $("input#item_name").val();
         var unit_price = $("input#item_price").val();
         var quantity = $("input#item_quantity").val();
-        var delete_button = "<button class=\"btn btn-danger btn-md \" onclick=\"remove_item_invoice(" + item_id + ")\"><i class='fa-solid fa-trash-can'></i></button>";
+        var delete_button = "<button class=\"btn btn-danger btn-md \" onclick=\"remove_item_invoice(" + item_id +
+            ")\"><i class='fa-solid fa-trash-can'></i></button>";
 
         var correct_data = true;
         if (item_id === '') {
@@ -614,8 +688,10 @@ require_once 'includes/header.php';
             if ($("td#" + item_id).length) {
                 $("td#" + item_id).next().html(parseFloat($("td#" + item_id).next().html()) + parseFloat(quantity));
             } else {
-                $("tbody#invoice_tbody").append("<tr> <td id = \"" + item_id + "\" class=\"invoice_item_name\"> " + item_name +
-                    "</td> <td class=\"invoice_item_quantity\">  " + quantity + " </td> <td class=\"invoice_unit_price\">  " +
+                $("tbody#invoice_tbody").append("<tr> <td id = \"" + item_id + "\" class=\"invoice_item_name\"> " +
+                    item_name +
+                    "</td> <td class=\"invoice_item_quantity\">  " + quantity +
+                    " </td> <td class=\"invoice_unit_price\">  " +
                     unit_price + "</td> <td> " + delete_button +
                     " </td></tr>")
             }
@@ -632,28 +708,29 @@ require_once 'includes/header.php';
 
     });
 
-    $("button#clear_invoice").click(function () {
+    $("button#clear_invoice").click(function() {
         $("tbody#invoice_tbody").html("");
         $("span#invoice_total").html("0,0 DA")
     });
 
 
-    $("button#print_invoice").click(function () {
+    $("button#confirm_print_bttn").click(function() {
 
         var items_id = [];
         var quantities = [];
         var unit_prices = [];
         var customer_id = $("input#customer_id").val();
-
-        $("td.invoice_item_name").each(function () {
+        var payment = $("input#payment").val();
+        
+        $("td.invoice_item_name").each(function() {
             items_id.push($(this).attr("id"));
 
         });
-        $("td.invoice_unit_price").each(function () {
+        $("td.invoice_unit_price").each(function() {
             unit_prices.push($(this).html());
 
         });
-        $("td.invoice_item_quantity").each(function () {
+        $("td.invoice_item_quantity").each(function() {
             quantities.push($(this).html());
 
         });;
@@ -665,6 +742,7 @@ require_once 'includes/header.php';
         $ajaxData.unit_prices = unit_prices;
 
         $ajaxData.customer_id = customer_id;
+        $ajaxData.payment = payment;
 
         //send the data to the server
 
@@ -672,7 +750,7 @@ require_once 'includes/header.php';
             url: "includes/invoice.php",
             type: "POST",
             data: $ajaxData,
-            success: function (data) {
+            success: function(data) {
                 if (data != -1) {
                     //reset the fields
                     $("input#customer_name").val("");
@@ -688,21 +766,31 @@ require_once 'includes/header.php';
                             "emptyTable": "Add Items to the invoice"
                         }
                     });
+                    
                     window.location.href = data;
+                    $("#Confirm_invoice_modal").modal('hide');
                     create_toast("Info", "The invoice is printed with success");
-                }
-                else {
+                } else {
                     create_toast("Error", "Erreur Serveur!");
                 }
             },
-            error: function (resultat, statut, erreur) {
-                toastr.error("Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.", "Erreur Serveur!");
-            }
+            error: function(resultat, statut, erreur) {
+                toastr.error(
+                    "Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.",
+                    "Erreur Serveur!");
+            } 
         });
 
-
+        $("#Confirm_invoice_modal").modal('hide');
     });
 
+    $("button#print_invoice").click(function() {
+
+        total = parseFloat($("#invoice_total").html());
+        $("#invoice_total_confirm").html($("#invoice_total").html());
+        $("#payment").val(total);
+        $("#Confirm_invoice_modal").modal('show');
+    });
 
     // select the items for the invoice
     function set_selection_supplier(supplier_name, supplierId) {
@@ -714,7 +802,7 @@ require_once 'includes/header.php';
     }
 
     $("input.AutoCompleteSupplier").on({
-        keyup: function () {
+        keyup: function() {
             var min_long = 2;
             var motcle = $(this).val();
             if (motcle.length >= min_long) {
@@ -727,7 +815,7 @@ require_once 'includes/header.php';
                     url: "includes/affichage_supplier.php",
                     type: "POST",
                     data: $ajaxData,
-                    success: function (data) {
+                    success: function(data) {
 
                         $("ul#listeSupplier").show();
                         $("ul#listeSupplier").html(data);
@@ -735,8 +823,10 @@ require_once 'includes/header.php';
                         // $("ul#listeElevesDossierScolaire").css("top", $("input#rechercheEleveDossierScolaire").prop("scrollTop")+28);
 
                     },
-                    error: function (resultat, statut, erreur) {
-                        toastr.error("Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.", "Erreur Serveur!");
+                    error: function(resultat, statut, erreur) {
+                        toastr.error(
+                            "Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.",
+                            "Erreur Serveur!");
                     }
                 });
             } else {
@@ -748,7 +838,7 @@ require_once 'includes/header.php';
 
 
     $("input.AutoCompleteItemPurchase").on({
-        keyup: function () {
+        keyup: function() {
 
             var min_long = 2;
             var motcle = $(this).val();
@@ -761,7 +851,7 @@ require_once 'includes/header.php';
                     url: "includes/affichage_item.php",
                     type: "POST",
                     data: $ajaxData,
-                    success: function (data) {
+                    success: function(data) {
 
                         $("ul#listeItemPurchase").show();
                         $("ul#listeItemPurchase").html(data);
@@ -769,8 +859,10 @@ require_once 'includes/header.php';
                         // $("ul#listeElevesDossierScolaire").css("top", $("input#rechercheEleveDossierScolaire").prop("scrollTop")+28);
 
                     },
-                    error: function (resultat, statut, erreur) {
-                        toastr.error("Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.", "Erreur Serveur!");
+                    error: function(resultat, statut, erreur) {
+                        toastr.error(
+                            "Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.",
+                            "Erreur Serveur!");
                     }
                 });
             } else {
@@ -788,7 +880,7 @@ require_once 'includes/header.php';
     }
 
 
-    $("button#add_item_button_purchase").click(function () {
+    $("button#add_item_button_purchase").click(function() {
         if ($("tbody#purchase_tbody > tr.odd").length) {
             $("tbody#purchase_tbody > tr.odd").remove();
         }
@@ -802,7 +894,8 @@ require_once 'includes/header.php';
         var item_name = $("input#purchase_item_name").val();
         var unit_price = $("input#item_price_purchase").val();
         var quantity = $("input#item_quantity_purchase").val();
-        var delete_button = "<button class=\"btn btn-danger btn-md \" onclick=\"remove_item_purchase(" + item_id + ")\"><i class=\" fa-solid fa-trash-can\"></i></button>";
+        var delete_button = "<button class=\"btn btn-danger btn-md \" onclick=\"remove_item_purchase(" + item_id +
+            ")\"><i class=\" fa-solid fa-trash-can\"></i></button>";
 
         var correct_data = true;
         if (item_id === '') {
@@ -827,8 +920,10 @@ require_once 'includes/header.php';
             if ($("td#" + item_id).length) {
                 $("td#" + item_id).next().html(parseFloat($("td#" + item_id).next().html()) + parseFloat(quantity));
             } else {
-                $("tbody#purchase_tbody").append("<tr> <td id = \"" + item_id + "\" class=\"purchase_item_name\"> " + item_name +
-                    "</td> <td class=\"purchase_item_quantity\">  " + quantity + " </td> <td class=\"purchase_unit_price\">  " +
+                $("tbody#purchase_tbody").append("<tr> <td id = \"" + item_id +
+                    "\" class=\"purchase_item_name\"> " + item_name +
+                    "</td> <td class=\"purchase_item_quantity\">  " + quantity +
+                    " </td> <td class=\"purchase_unit_price\">  " +
                     unit_price + "</td> <td> " + delete_button +
                     " </td></tr>")
             }
@@ -845,28 +940,28 @@ require_once 'includes/header.php';
 
     });
 
-    $("button#clear_purchase").click(function () {
+    $("button#clear_purchase").click(function() {
         $("tbody#purchase_tbody").html("");
         $("span#purchase_total").html("0,0 DA")
     });
 
 
-    $("button#submit_purchase").click(function () {
+    $("button#submit_purchase").click(function() {
 
         var items_id = [];
         var quantities = [];
         var unit_prices = [];
         var supplier_id = $("input#supplier_id").val();
 
-        $("td.purchase_item_name").each(function () {
+        $("td.purchase_item_name").each(function() {
             items_id.push($(this).attr("id"));
 
         });
-        $("td.purchase_unit_price").each(function () {
+        $("td.purchase_unit_price").each(function() {
             unit_prices.push($(this).html());
 
         });
-        $("td.purchase_item_quantity").each(function () {
+        $("td.purchase_item_quantity").each(function() {
             quantities.push($(this).html());
 
         });;
@@ -884,7 +979,7 @@ require_once 'includes/header.php';
             url: "includes/purchase.php",
             type: "POST",
             data: $ajaxData,
-            success: function (data) {
+            success: function(data) {
                 if (data != -1) {
                     //reset the fields
                     $("input#supplier_name").val("");
@@ -905,7 +1000,7 @@ require_once 'includes/header.php';
                     create_toast("Error", "Erreur Serveur!");
                 }
             },
-            error: function (resultat, statut, erreur) {
+            error: function(resultat, statut, erreur) {
                 create_toast("Error", "Erreur Serveur!");
             }
         });
@@ -920,15 +1015,16 @@ require_once 'includes/header.php';
 
     function count_purchase_total() {
         var sum = 0.0;
-        $("tbody#purchase_tbody > tr").each(function (index) {
+        $("tbody#purchase_tbody > tr").each(function(index) {
             //sum = sum + parseFloat($(this).children("td").eq(1).text()) * parseFloat(this.children("td").eq(2).text()); 
-            sum = sum + parseFloat($(this).children("td").eq(1).text()) * parseFloat($(this).children("td").eq(2).text());
+            sum = sum + parseFloat($(this).children("td").eq(1).text()) * parseFloat($(this).children("td").eq(2)
+                .text());
         });
         $("span#purchase_total").html(sum + " DA")
     }
 
 
-    $("button#add_new_customer").click(function () {
+    $("button#add_new_customer").click(function() {
         if (!$("input#new_customer_firstname").val() || !$("input#new_customer_surname").val()) {
             alert("you need to chose firsname and surname");
             return;
@@ -954,7 +1050,7 @@ require_once 'includes/header.php';
             url: "actions/__add_customerModel.php",
             type: "POST",
             data: $ajaxData,
-            success: function (data) {
+            success: function(data) {
                 if (data == 1) {
                     $("input#new_customer_firstname").val("");
                     $("input#new_customer_surname").val("");
@@ -968,7 +1064,7 @@ require_once 'includes/header.php';
                     create_toast("Error", "The customer already exists!")
                 }
             },
-            error: function (resultat, statut, erreur) {
+            error: function(resultat, statut, erreur) {
                 create_toast("Error", "Erreur Serveur!");
             }
         });
@@ -976,7 +1072,7 @@ require_once 'includes/header.php';
 
     });
 
-    $("button#add_new_supplier").click(function () {
+    $("button#add_new_supplier").click(function() {
         if (!$("input#supplier_firstname").val() || !$("input#supplier_surname").val()) {
             alert("you need to chose firsname and surname");
             return;
@@ -1002,7 +1098,7 @@ require_once 'includes/header.php';
             url: "actions/__add_supplierModel.php",
             type: "POST",
             data: $ajaxData,
-            success: function (data) {
+            success: function(data) {
                 if (data == 1) {
                     $("input#supplier_firstname").val("");
                     $("input#supplier_surname").val("");
@@ -1012,12 +1108,11 @@ require_once 'includes/header.php';
 
                     $("#new_supplier").modal('hide');
                     create_toast("Info", "The supplier has been added succefully!")
-                }
-                else {
+                } else {
                     create_toast("Error", "The supplier already exists!")
                 }
             },
-            error: function (resultat, statut, erreur) {
+            error: function(resultat, statut, erreur) {
                 create_toast("Error", "Erreur Serveur!");
             }
         });
@@ -1025,7 +1120,7 @@ require_once 'includes/header.php';
 
     });
 
-    $("button#new_item").click(function () {
+    $("button#new_item").click(function() {
         if (!$("input#add_item_name").val()) {
             alert("you need to chose item name");
             return;
@@ -1051,31 +1146,27 @@ require_once 'includes/header.php';
             url: "actions/__add_itemModel.php",
             type: "POST",
             data: $ajaxData,
-            success: function (data) {
+            success: function(data) {
                 if (data == 0) {
                     $("input#add_item_name").val("");
                     $("input#add_reference").val("");
 
                     $("#new_item").modal('hide');
                     create_toast("Info", "The item has been added succefully!");
-                }
-                else if (data == -1 ){
+                } else if (data == -1) {
                     create_toast("Error", "There is already an item with the same name or reference!");
-                }
-                else if (data == -2){
+                } else if (data == -2) {
                     create_toast("Error", "Something went wrong while adding prices!");
-                }
-                else {
+                } else {
                     create_toast("Error", "Something went wrong!");
                 }
 
             },
-            error: function (resultat, statut, erreur) {
+            error: function(resultat, statut, erreur) {
                 create_toast("Error", "Erreur Serveur!");
             }
         });
 
 
     });
-
 </script>

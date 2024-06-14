@@ -253,7 +253,7 @@ flash();
 
             success: function (data) {
                 $("tbody#AllItemsTbody").html(data);
-                $("#AllItemsTable").DataTable({
+                table = $("#AllItemsTable").DataTable({
                     "columnDefs": [
                         {
                             target: 8,
@@ -284,6 +284,13 @@ flash();
                 $("#AllItemsTable_filter").append("<button  class=\"btn btn-danger\"  data-bs-toggle=\"modal\" data-bs-target=\"#new_item\" ><i class=\"fas fa-plus pr-2\"aria-hidden=\"true\"></i> New Item</button>");
                 $("#AllItemsTable_filter").append("<span>   </span>");
                 $("#AllItemsTable_filter").append("<button class=\"btn btn-primary\" onclick='printShooping()' > Print Shooping List</button>");
+                
+                $('.dataTables_filter input')
+                    .off()
+                    .on( 'keyup', function () {
+                    console.log('event')
+                        table.column(1).search( this.value ).draw();
+                } );
 
             },
             error: function (resultat, statut, erreur) {

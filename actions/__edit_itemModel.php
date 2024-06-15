@@ -3,8 +3,7 @@
     require_once '../bootstrap.php';
     require_once '../db.php';
     //only POST request is accepted
-    if($_SERVER['REQUEST_METHOD'] == 'POST')
-    {
+    if (isset($_POST['update_item'])){
         // Sanitize POST array
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
     
@@ -19,16 +18,7 @@
         $quantity = $_POST['quantity'];
         $barecode = $_POST['barrecode'];
         $threshold = $_POST['threshold'];
-        /* $characters = str_split($item_name);
-
-        foreach ($characters as $character) {
-            echo $character . " => ". ord($character)."\n";
-        } */
         
-        /* $sql = " UPDATE `item` SET `item_name` = '" .$item_name. "
-                    ',`item_cat` = '" .$item_cat."', `item_reference` = '" .$item_ref. "
-                    ', `item_quantity` = '" .$quantity. "'  , `barre_code` = '" .$barecode. "'
-                    WHERE `item`.`item_id` = '" .$item_id. "'"; */
         $sql = 'UPDATE `item` SET `item_name` = \'' . $item_name . '\',
                           `item_cat` = \'' . $item_cat . '\', 
                           `item_reference` = \'' . $item_ref . '\',
@@ -38,35 +28,36 @@
                           WHERE `item`.`item_id` = \'' . $item_id . '\'';
 
         
-        //var_dump($sql);
-        $query = $conn->query($sql);
-        if($query == true)
-        {
+        
+        try{
+            $query = $conn->query($sql);
+        
             $sql = " INSERT INTO `item_price`(`item_id`, `accreditation_date`, `price_max`, `price_min`) VALUES (".$item_id.", CURDATE(),".$pricemax.",".$pricemin.")
             ON DUPLICATE KEY UPDATE price_max = ".$pricemax.", price_min = ".$pricemin;
             
             $query = $conn->query($sql);
             if($query == true){
-                $_SESSION['success'] = 'item updated successfully';
+                echo 0;
             }
             else{
-                $_SESSION['error'] = 'Something went wrong while updating item';
+                echo -1;
             }
         }
-
-        else
-        {
-            $_SESSION['error'] = 'Something went wrong while updating item';
+        catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                echo -1;
+            } else {
+                echo -2;
+            }
         }
 
         //redirect to item home
-        header('location: '.URLROOT.'/items.php');
-   }
-   else
-   {
+        //header('location: '.URLROOT.'/items.php');
+    }
+    else{
        //$_SESSION['error'] = 'Something went wrong while updating item';
        //header('location: ../items.php');
-   }
+    }
 
 
 

@@ -72,7 +72,7 @@ flash();
 <div class="modal fade php-email-form" id="Edit" tabindex="-1" aria-labelledby="EditLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="POST" action="./actions/__edit_itemModel.php">
+            <!--form method="POST" action="./actions/__edit_itemModel.php"-->
                 <div class="modal-header">
                     <h5 class="modal-title" id="EditLabel">Edit Item Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -131,10 +131,10 @@ flash();
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><span
                             class="glyphicon glyphicon-remove"></span> Cancel</button>
-                    <button type="submit" name="edit" class="btn btn-success"><span
+                    <button type="submit" name="validate_edit" id="validate_edit" class="btn btn-success"><span
                             class="glyphicon glyphicon-check"></span> Update</a>
                 </div>
-            </form>
+            <!--/form-->
 
         </div>
     </div>
@@ -368,6 +368,8 @@ flash();
                 $("input#pricemax").val(data[5]);
                 $("input#item_id").val(item_id);
                 $("input#barrecode").val(data[6]);
+                $("input#barrecode").removeClass("is-invalid");
+                
                 $("input#threshold").val(data[7]);
             },
             error: function (resultat, statut, erreur) {
@@ -411,7 +413,6 @@ flash();
             },
 
             success: function (data) {
-
               window.location = data;
             },
             error: function (resultat, statut, erreur) {
@@ -442,4 +443,60 @@ flash();
         });
 
     }
+
+    $("button#validate_edit").click(function(){
+        //get all the data
+        name  = $("input#item_name").val();
+        category = $("#item_category").val();
+        quantity = $("input#quantity").val();
+        price_min = $("input#pricemin").val();
+        price_max = $("input#pricemax").val();
+        item_id = $("input#item_id").val();
+        bar_code = $("input#barrecode").val();
+        threshold = $("input#threshold").val();
+
+        $.ajax({
+            url: "actions/__edit_itemModel.php",
+            type: "POST",
+            data: {
+                update_item: "1",
+                item_id: item_id,
+                item_name: name,
+                item_category: category,
+                quantity: quantity,
+                pricemin: price_min,
+                pricemax: price_max,
+                barrecode: bar_code,
+                threshold: threshold
+            },
+
+            success: function (data) {
+                if(data == 0){
+                    
+                    $("div#Edit").modal('hide');
+
+                    //update the row in the data table
+                    //select the second td in tr with id = item_id
+
+                    table = $("#AllItemsTable").DataTable();
+                   
+                    var row_index = table.row($("#item_" + item_id)).index();
+                    table.cell(row_index, 1).data(name);
+                    table.cell(row_index, 3).data(quantity);
+                    table.cell(row_index, 6).data(price_min + " DA");
+                    table.cell(row_index, 5).data(price_max + " DA");
+                    create_toast("Info", "The item has been updated succefully!")
+                    //create_toast("Info", row_index)
+                    
+                }
+                else{
+                    create_toast("Error", "Cannot update item check the bare code and try again!");
+                    $("input#barrecode").addClass("is-invalid");
+                }
+            },
+            error: function (resultat, statut, erreur) {
+                create_toast("Error", "Error server!")
+            }
+        });
+    });
 </script>

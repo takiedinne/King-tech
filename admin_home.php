@@ -71,9 +71,11 @@ require_once 'includes/header.php';
                             </div>
                             <div class="col-md-10  mt-3 mt-md-0">
                                 <input id="customer_id" type="text" hidden="hidden" value=-1>
+                                <input id="customer_type" type="text" hidden="hidden" value="-1">
                                 <div class="input-group mb-3">
                                     <input id="customer_name" type="text" class="form-control AutoCompleteCustomer"
                                         name="customer" placeholder="Enter Customer name">
+                                        
                                     <div class="input-group-append">
                                         <span class="input-group-text square_button" data-bs-toggle="modal"
                                             data-bs-target="#new_customer">New</span>
@@ -554,14 +556,16 @@ require_once 'includes/header.php';
             } else {
                 $("ul#listeCustomer").hide();
                 $("input#customer_id").val(-1);
+                $("input#customer_type").val(-1);
             }
         }
     });
     // select the items for the invoice
-    function set_selection_customer(customer_name, customerId) {
+    function set_selection_customer(customer_name, customerId, customerType) {
 
         $("input#customer_name").val(customer_name);
         $("input#customer_id").val(customerId);
+        $("input#customer_type").val(customerType);
         $("ul#listeCustomer").hide();
 
     }
@@ -601,9 +605,12 @@ require_once 'includes/header.php';
 
                         $("ul#listeItem").show();
                         $("ul#listeItem").html(data);
-
-                        // $("ul#listeElevesDossierScolaire").css("top", $("input#rechercheEleveDossierScolaire").prop("scrollTop")+28);
-
+                        //create_toast("Info", $("ul#listeItem li").length);
+                        if ($("ul#listeItem li").length == 1 && $("ul#listeItem li:first a:first").text() != "Aucun résultat trouvé!"){
+                            
+                            firstLink = $("ul#listeItem li:first a:first");
+                            firstLink.click();
+                        }
                     },
                     error: function(resultat, statut, erreur) {
                         toastr.error(
@@ -626,7 +633,13 @@ require_once 'includes/header.php';
         $("input#item_quantity").attr({
             "max": availableQty
         });
-        $("input#item_price").val(price_max);
+
+        if($("input#customer_type").val()==2){
+            $("input#item_price").val(price_min);
+        }else{
+            $("input#item_price").val(price_max);
+        }
+        
         $("input#item_price").attr({
             "min_val": price_min
         });
@@ -856,7 +869,11 @@ require_once 'includes/header.php';
                         $("ul#listeItemPurchase").show();
                         $("ul#listeItemPurchase").html(data);
 
-                        // $("ul#listeElevesDossierScolaire").css("top", $("input#rechercheEleveDossierScolaire").prop("scrollTop")+28);
+                        if ($("ul#listeItemPurchase li").length == 1 && $("ul#listeItemPurchase li:first a:first").text() != "Aucun résultat trouvé!"){
+                            
+                            firstLink = $("ul#listeItemPurchase li:first a:first");
+                            firstLink.click();
+                        }
 
                     },
                     error: function(resultat, statut, erreur) {

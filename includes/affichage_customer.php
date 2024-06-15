@@ -20,7 +20,7 @@ if (isset($_SESSION['role'])){
             $customer = $row['customer_firstname'] .' '. $row['customer_surname'];
             $highlighted = preg_replace('/('.$_POST['customer'].')/i', '<b class="font-green-sharp">$0</b>', $customer);
             $result .= '<li style="cursor: pointer;cursor: hand;" id="" >
-                        <a  onclick="set_selection_customer(\''.$customer.'\',\''.$row["customer_id"].'\')">&nbsp;'.$highlighted.'</a>
+                        <a  onclick="set_selection_customer(\''.$customer.'\',\''.$row["customer_id"].'\',\''.$row["type_customer"].'\')">&nbsp;'.$highlighted.'</a>
                     </li>'; 
         } 
         $res_customer->close();

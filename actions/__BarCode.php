@@ -47,7 +47,7 @@ if (isset($_SESSION['role'])){
         $templateProcessor = new TemplateProcessor("../PHPWord/bar_code_template.docx");
     
         // Add the barcode image to the Word document
-        $templateProcessor->setImageValue('image.jpg', array('path' => '../PHPWord/barcode.png', 'width' => 200, 'height' => 100));
+        $templateProcessor->setImageValue('image.jpg', array('path' => '../PHPWord/barcode.png', 'width' => 100, 'height' => 50));
         $templateProcessor->setValue('code_bar', $row_item['barre_code']);
         // Save the modified Word document
         $templateProcessor->saveAs('../PHPWord/barcode.docx');

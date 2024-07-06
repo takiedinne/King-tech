@@ -5,6 +5,7 @@ require_once 'includes/header.php';
 require_once 'bootstrap.php';
 require_once 'includes/main_header.php';
 include_once 'db.php';
+
 ?>
 <br>
 <div class="row">

@@ -54,6 +54,22 @@ if (isset($_SESSION['role'])){
         
         echo URLROOT.'/PHPWord/barcode.docx';
     }
+    elseif (isset($_POST['GetRandomBarCode'])){
+        $barcodeLength = 18;
+            
+        $barcode = generateRandomBarcode($barcodeLength);
+
+        //check that the generated bar code is not used before
+        $sql = "SELECT * FROM `item` WHERE `barre_code` = '$barcode'";
+        $query = $conn->query($sql);
+        //echo $query->num_rows;
+        while ($query->num_rows != 0){
+            $barcode = generateRandomBarcode($barcodeLength);
+            $sql = "SELECT * FROM `item` WHERE `barre_code` = '$barcode'";
+            $query = $conn->query($sql);
+        }
+        echo $barcode;
+    }
     else {
         header('location: '.URLROOT.'/index.php?codeErreur=-5');
     }

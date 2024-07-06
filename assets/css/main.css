@@ -1902,7 +1902,7 @@ section {
   background: rgba(0, 131, 116, 0.8);
 }
 
-.contact .php-email-form .square_button {
+.square_button {
   background: var(--color-primary);
   border: 0;
   padding: 14px 15px;
@@ -1911,7 +1911,7 @@ section {
   border-radius: 0px;
 }
 
-.contact .php-email-form .square_button:hover {
+.square_button:hover {
   background: rgba(0, 131, 116, 0.8);
 }
 

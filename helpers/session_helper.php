@@ -17,7 +17,7 @@ function flash()
 
   //display on success
   if (isset($_SESSION['success'])) {
-    $success_toast ="create_toast('Error','".$_SESSION['success']."');";
+    //$success_toast ="create_toast('Error','".$_SESSION['success']."');";
     unset($_SESSION['success']);
   }
 

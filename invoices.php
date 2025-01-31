@@ -27,7 +27,7 @@ include_once('db.php');
 
                     <div class="row">
 
-                        <div class="col-sm-4 form-group">
+                        <div class="col-sm-6 form-group">
                             <div class="row">
                                 <div class="col-sm-4 form-group">
                                     <h5> Invoice N° :</h1>
@@ -39,7 +39,7 @@ include_once('db.php');
                             </div>
                         </div>
 
-                        <div class="col-sm-4 form-group">
+                        <div class="col-sm-6 form-group">
                             <div class="row">
                                 <div class="col-sm-4 form-group">
                                     <h5> Date limit :</h5>
@@ -50,8 +50,10 @@ include_once('db.php');
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-sm-4 form-group">
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
                             <div class="row">
                                 <div class="col-sm-4 form-group">
                                     <h5> Customer Name :</h5>
@@ -68,6 +70,20 @@ include_once('db.php');
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <div class="row align-items-center">
+                                <div class="col-sm-1 d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" value="" id="NotPaidCheckBox">
+                                </div>
+
+                                <div class="col-sm-4 d-flex align-items-center">
+                                    <h5 class="mb-0">Only not paid</h5>
+                                </div>
+                                <div class="col-sm-7">
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div><!-- End Contact Form -->
@@ -115,7 +131,8 @@ include_once('db.php');
 
         </div>
     </section><!-- End New sale Section -->
-</main><!-- End #main -->
+</main>
+<!-- End #main -->
 
 <!-- Edit Invoice -->
 <div class="modal fade php-email-form" id="Edit_invoice_modal" tabindex="-1" aria-labelledby="Edit_invoiceLabel"
@@ -262,6 +279,8 @@ include_once('db.php');
         </div>
     </div>
 </div>
+
+
 <?php require_once './includes/footer.php'; ?>
 
 
@@ -543,12 +562,15 @@ $("input.AutoCompleteCustomer").on({
                         "Erreur Serveur!");
                 }
             });
-        } else {
+        }else {
             $("ul#listeCustomer").hide();
             $("input#customer_id").val(-1);
             $("input#customer_type").val(-1);
             $("div#depts_div").fadeOut();
-            
+
+            if (motcle.length == 0) {
+                on_change_date_limit();
+            }
         }
     }
 });
@@ -639,4 +661,21 @@ function get_depts_for_customer(customerId) {
         }
     });
 }
+
+$("#NotPaidCheckBox").change(function() {
+    $("#AllInvoicesTable").DataTable().draw();
+});
+
+$.fn.dataTable.ext.search.push(
+        function(settings, data, dataIndex) {
+            var total = parseFloat(data[4]) || 0; // Total column
+            var paid = parseFloat(data[5]) || 0; // Paid column
+            var checkBox = $('#NotPaidCheckBox').is(':checked'); // Checkbox state
+
+            if (checkBox) {
+                return paid < total;
+            }
+            return true;
+        }
+);
 </script>

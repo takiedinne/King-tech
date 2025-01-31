@@ -19,6 +19,7 @@
                 </li>
                 <li><a href="items.php">Items</a></li>
                 <li><a href="suppliers.php">Suppliers</a></li>
+                <li><a href="customers.php">Customers</a></li>
                 <li class="dropdown"><a href="#"><span>Dashboard</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                     <ul>
                         <li><a href="Dashboard.php?type=day">Daily</a></li>

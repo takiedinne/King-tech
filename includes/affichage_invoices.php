@@ -105,7 +105,7 @@ if (isset($_SESSION['role'])){
             
         }
     }
-    if (isset($_POST['filterInvoices'])){
+    elseif (isset($_POST['filterInvoices'])){
         
         $date_limit = $_POST['date_limit'];
         $customer_id = $_POST['customerId'];
@@ -124,7 +124,7 @@ if (isset($_SESSION['role'])){
             }
         }
         if ($whereClause == ""){
-            $whereClause = "Where true ";
+            $whereClause = "Where `invoice`.date =  CURRENT_DATE() ";
         }
         
         //sql according to role
@@ -158,11 +158,10 @@ if (isset($_SESSION['role'])){
                         </td>
                     </tr>"; 
             $i++;
-            
         }
     }
 
-    if (isset($_POST['getDepts'])){
+    elseif (isset($_POST['getDepts'])){
         
         
         $customer_id = $_POST['customerId'];

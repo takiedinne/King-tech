@@ -66,9 +66,11 @@ if (isset($_SESSION['role'])){
                        <td>" . $row['time'] . "</td>
                        <td>". $row['payment'] ."</td>
                        <td>
-                           <button  class='btn btn-danger btn-sm' id='popover_delete_payment" . $row['item_id'] . "'
-                                   onclick=\"delete_payment(".$invoice_id.", ".$row['date']."," . $row['time'] .")\"><span class='fas fa-undo'></span> return </button>
+                           <button  class='btn btn-danger btn-sm' 
+                           id='delete_payment_".$invoice_id."_".$row['date']."_".$row['payment']."'
+                                   onclick=\"delete_payment(".$invoice_id.", '".$row['date']."', ".$row['payment'].")\"><span class='fas fa-undo'></span> return </button>
                        </td>
+                       
                    </tr>";
         }
     }

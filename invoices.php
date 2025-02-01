@@ -463,6 +463,11 @@ function GetPayments(invoice_id, customer_name, date, total, payment) {
             $("tbody#payments_tbody").html(data);
             var table = $("table#payments_table").dataTable();
 
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+            })
+
         },
         error: function(resultat, statut, erreur) {
             $("#AllInvoicesTable").html("error");
@@ -485,14 +490,15 @@ $("#add_payment").click(function() {
             if (data == 1) {
                 //add the payment to the table
                 var table = $("table#payments_table").DataTable();
+                var dt = new Date();
+                var date = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                 table.row.add([
-                    "now",
-                    "now",
+                    dt,
+                    time,
                     payment_amount,
-                    "<button  class='btn btn-danger btn-sm' id='popover_delete_payment" +
-                    invoice_id +
-                    "' onclick='delete_payment(" + invoice_id +
-                    ", now, now)'><span class='fas fa-undo'></span> return </button>"
+                    "<button  class='btn btn-danger btn-sm' id='confirm_delete_payment_"+invoice_id+"_"+ date +"_"+time+" onclick='delete_payment(" + invoice_id +
+                    ", " + date +", '"+time+"')'><span class='fas fa-undo'></span> return </button>"
                 ]).draw();
 
                 //update the total payment
@@ -662,9 +668,61 @@ function get_depts_for_customer(customerId) {
     });
 }
 
+function delete_payment(invoice_id, date, payment) {
+
+
+    //delete the item from the database
+    var $btn = $("#add_payment" /* + invoice_id + "_" + date + "_" + payment */);
+      
+    var popover = bootstrap.Popover.getOrCreateInstance($btn, {
+        container: 'body',
+        title: '<h4 class="custom-title"><i class="fas fa-warning"></i> Are you sure ?<button  > xxxx </button> </h4>',
+        content: '<div class="popover-content text-center">' +
+            '<div class="btn-group">' +
+            '<a class="btn btn-sm btn-primary confirm_delete_payment" ><i class="fas fa-check"></i> Yes</a>' +
+            '<a class="btn btn-sm btn-danger cancel_delete_payment"><i class="fas fa-times"></i> No</a>' +
+            '</div>' +
+            '</div>',
+        html: true,
+    });
+
+    popover.show();
+
+    $(".confirm_delete_payment").click(function() {
+        $.ajax({
+            url: "includes/invoice.php",
+            type: "POST",
+            data: {
+                delete_payment: "1",
+                invoice_id: invoice_id,
+                payment: payment,
+                date: date
+            },
+            success: function(data) {
+                //delet the item from the datatable
+                table = $("#payments_table").DataTable();
+                var $tr = $($btn).parent().parent(); // Select the closest <tr> ancestor
+      
+                table.row($tr).remove().draw();
+                popover.dispose();
+
+            },
+            error: function(resultat, statut, erreur) {
+                $("#payments_table").html("error");
+            }
+        });
+    });
+
+    $(".cancel_delete_payment").click(function() {
+        popover.hide();
+    })
+
+}
+
 $("#NotPaidCheckBox").change(function() {
     $("#AllInvoicesTable").DataTable().draw();
 });
+
 
 $.fn.dataTable.ext.search.push(
         function(settings, data, dataIndex) {

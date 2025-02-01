@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bootstrap Popover Example</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
 
-<div class="container mt-3">
-  <h2>Checkboxes</h2>
-  <p>To style a checkbox, use a container element with a .form-check class, and add .form-check-label to labels, and .form-check-input to the input with type="checkbox".</p>
-  <p>The form below contains three checkboxes. The first option is checked by default, and the last option is disabled:</p>
-  
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" checked>
-      <label class="form-check-label" for="check1">Option 1</label>
-    </div>
-    
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="check2" name="option2" value="something">
-      <label class="form-check-label" for="check2">Option 2</label>
-    </div>
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" disabled>
-      <label class="form-check-label">Option 3</label>
-    </div>
-    
-</div>
+  <button id="btn1" onclick="myfun()" class="btn btn-primary">Click me</button>
+
+  <script>
+    function myfun() {
+     
+      
+      var btn = $("#btn1");
+      alert('togglePopover');
+      // Get or create a popover instance
+      var popover = bootstrap.Popover.getOrCreateInstance(btn, {
+        container: 'body',
+        title: '<h4 class="custom-title"><i class="fas fa-warning"></i> Are you sure ?<button  > xxxx </button> </h4>',
+        content: '<div class="popover-content text-center">' +
+            '<div class="btn-group">' +
+            '<a class="btn btn-sm btn-primary confirm_delete_item" ><i class="fas fa-check"></i> Yes</a>' +
+            '<a class="btn btn-sm btn-danger cancel_delete_item"><i class="fas fa-times"></i> No</a>' +
+            '</div>' +
+            '</div>',
+        html: true,
+      });
+
+      popover.show();
+      
+    };
+  </script>
 
 </body>
 </html>

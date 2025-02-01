@@ -182,6 +182,19 @@ if (isset($_SESSION['role'])){
             echo -1;
         }
     }
+    elseif (isset($_POST['delete_payment'])){
+        $invoice_id = $_POST['invoice_id'];
+        $payment = $_POST['payment'];
+        $date_payment = $_POST['date'];
+
+        $sql = "DELETE FROM `invoice_payment` WHERE `invoice_id` = '$invoice_id' AND `payment` = $payment AND `date` = '$date_payment'";
+        echo $sql;
+        if ($conn->query($sql) === TRUE) {
+            echo 1;
+        } else {
+            echo -1;
+        }
+    }
     else {
         header('location: '.URLROOT.'/index.php?codeErreur=-5');
     }

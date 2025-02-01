@@ -47,7 +47,13 @@ if (isset($_SESSION['role'])){
         $templateProcessor = new TemplateProcessor("../PHPWord/bar_code_template.docx");
     
         // Add the barcode image to the Word document
-        $templateProcessor->setImageValue('image.jpg', array('path' => '../PHPWord/barcode.png', 'width' => 100, 'height' => 50));
+        //$templateProcessor->setImageValue('image.jpg', array('path' => '../PHPWord/barcode.png', 'width' => 10, 'height' => 76));
+        $templateProcessor->setImageValue('image.jpg', [
+            'path'   => '../PHPWord/barcode.png',
+            'width'  => 140, // 3.5 cm * 37.8 (96 DPI)
+            'height' => 40,  // 1 cm * 37.8 (96 DPI)
+            'ratio'  => false
+        ]);
         $templateProcessor->setValue('code_bar', $row_item['barre_code']);
         // Save the modified Word document
         $templateProcessor->saveAs('../PHPWord/barcode.docx');

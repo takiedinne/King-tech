@@ -117,7 +117,6 @@ if (isset($_SESSION['role'])){
                 SELECT
                     *
                 FROM table2 where row_number_supply = 1;";
-        var_dump($sql);
         $query = $conn->query($sql);
             $i = 1;
             $result =array();
@@ -139,7 +138,7 @@ if (isset($_SESSION['role'])){
                             <td>
                                 <button  id ='" . $row['item_id'] . "'  class='edit_item_button btn btn-success btn-sm' data-bs-toggle= 'modal' data-bs-target= '#Edit' onclick = 'edit_item(".$row['item_id'].")'><span class='fas fa-edit'></span></button>
                                 <button  id = 'popover_delete_" . $row['item_id'] . "' tabindex='0' class='btn btn-danger btn-sm' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='right' data-bs-content='test' onclick='delete_item_click(".$row['item_id'].", \"".$row['item_name']."\")'><span class='fas fa-trash'></span></button>
-                                <button  id ='getSup" . $row['item_id'] . "'  class='getSuppOpt btn btn-primary btn-sm' data-bs-toggle= 'modal' data-bs-target= '#SuppOpt' onclick = 'getSupOpt(".$row['item_id'].")'><span class='fas fa-clock-rotate-left'></span></button>
+                                <button  id ='getSup" . $row['item_id'] . "'  class='getSuppOpt btn btn-primary btn-sm' data-bs-toggle= 'modal' data-bs-target= '#SuppOpt' onclick = 'getHistoryItem(".$row['item_id'].")'><span class='fas fa-clock-rotate-left'></span></button>
                                 <button  id ='printBarCode" . $row['item_id'] . "'  class='printBarClass btn btn-secondary btn-sm' data-bs-toggle= 'modal' data-bs-target= '#printBarCode' onclick = 'getBarCode(".$row['item_id'].")'><span class='fas fa-barcode'></span></button>
                             </td>
                             <td>". $row['threshold'] ."</td>
@@ -159,6 +158,29 @@ if (isset($_SESSION['role'])){
         while ($row = $query->fetch_assoc()) {
 
             $supplier = $row['supplier_firstname']." ".$row['supplier_surname'];
+            $date = $row['date'];
+            $quantity = $row['quantity'];
+            $unitPrice = $row['unit_price'];
+            echo  "<tr>
+                        <td>" . $supplier . "</td>
+                        <td>" . $date . "</td>
+                        <td>" . $quantity. "</td>
+                        <td>". $unitPrice ." DA</td>
+                    </tr>";
+            $i++;
+            
+        }
+    }
+    elseif(isset($_POST['get_History_customers'])){
+        $item_id = $_POST['item_id'];
+        $sql = "SELECT * FROM `invoice` as i INNER JOIN `invoice_item` as iv on i.invoice_id = iv.invoice_id 
+                INNER JOIN customer as c on c.customer_id = i.customer_id
+                WHERE iv.item_id  = '" . $item_id . "' ORDER BY `i`.`date`, `i`.`time` DESC";
+
+        $query = $conn->query($sql);
+        while ($row = $query->fetch_assoc()) {
+
+            $supplier = $row['customer_firstname']." ".$row['customer_surname'];
             $date = $row['date'];
             $quantity = $row['quantity'];
             $unitPrice = $row['unit_price'];

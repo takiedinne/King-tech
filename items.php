@@ -222,26 +222,75 @@ flash();
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="EditLabel">Supply Operations history</h5>
+                <h5 class="modal-title" id="EditLabel">Item history</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <table id="suppHistory_table"
-                        class="table table-hover table-bordered table-striped table-responsive">
-                        <thead>
-                            <tr>
-                                <th>SUPPLIER</td>
-                                <th>DATE</td>
-                                <th>UNIT PRICE</td>
-                                <th>QUANTITY</td>
-                            </tr>
-                        </thead>
-                        <tbody id="suppHistory_tbody">
+                <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a
+                        class="nav-link active"
+                        id="ex3-tab-1"
+                        data-bs-toggle="tab"
+                        href="#supply_tab"
+                        role="tab"
+                        aria-controls="supply_tab"
+                        aria-selected="true"
+                        >Supply</a
+                        >
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a
+                        class="nav-link"
+                        id="ex3-tab-2"
+                        data-bs-toggle="tab"
+                        href="#selling_tab"
+                        role="tab"
+                        aria-controls="selling_tab"
+                        aria-selected="false"
+                        >Selling</a
+                        >
+                    </li>
+                    
+                </ul>
+                <div class="tab-content" id="ex2-content">
+                    <div
+                        class="tab-pane fade show active" id="supply_tab" role="tabpanel" aria-labelledby="ex3-tab-1">
+                        <div class="row">
+                            <table id="suppHistory_table"
+                                class="table table-hover table-bordered table-striped table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>SUPPLIER</td>
+                                        <th>DATE</td>
+                                        <th>UNIT PRICE</td>
+                                        <th>QUANTITY</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="suppHistory_tbody">
 
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="selling_tab" role="tabpanel" aria-labelledby="ex3-tab-2">
+                        <table id="Customer_History_table"
+                                class="table table-hover table-bordered table-striped table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Customer</td>
+                                    <th>DATE</td>
+                                    <th>UNIT PRICE</td>
+                                    <th>QUANTITY</td>
+                                </tr>
+                            </thead>
+                            <tbody id="customer_History_tbody">
+
+                            </tbody>
+                        </table> 
+                    </div>
                 </div>
+               
             </div>
 
             <div class="modal-footer">
@@ -423,6 +472,34 @@ function getSupOpt(item_id) {
         }
     });
 
+}
+
+function getCustOpt(item_id) {
+    $.ajax({
+        url: "includes/affichage_item.php",
+        type: "POST",
+        data: {
+            get_History_customers: "1",
+            item_id: item_id
+        },
+
+        success: function(data) {
+            if (data != -1) {
+                $("tbody#customer_History_tbody").html(data);
+                $("#customer_History_table").DataTable();
+            }
+        },
+        error: function(resultat, statut, erreur) {
+            create_toast("Error", "Cannot charge Edit form somthing is wrong!");
+
+        }
+    });
+
+}
+
+function getHistoryItem(item_id) {
+    getSupOpt(item_id);
+    getCustOpt(item_id);
 }
 
 function getBarCode(item_id) {

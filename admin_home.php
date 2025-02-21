@@ -171,7 +171,7 @@ require_once 'includes/header.php';
                                 <button type="button" id="clear_invoice"><span class='fa-solid fa-xmark'></span>
                                     Clear</button>
                                 <button type="button" id="print_invoice"><span class='fa-solid fa-print'></span>
-                                    Print</a>
+                                    Submit</a>
                             </div>
                         </div>
                     </div>
@@ -508,8 +508,12 @@ require_once 'includes/header.php';
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary button_green_per" id="confirm_print_bttn"><span
-                            class='fa-solid fa-print'></span> print</button>
+                    <button type="button" class="btn btn-primary button_green_per" id="confirm_print_bttn">
+                        <span
+                            class='fa-solid fa-print'></span> Print</button>
+                     <button type="button" class="btn btn-primary button_green_per" id="confirm_without_print_bttn">
+                        <span
+                            class='fa-solid fa-print'></span> Submit</button>
                 </div>
 
             </div>
@@ -806,6 +810,7 @@ $("button#confirm_print_bttn").click(function() {
 
     $ajaxData.customer_id = customer_id;
     $ajaxData.payment = payment;
+    $ajaxData.print = 1;
 
     //send the data to the server
     $.ajax({
@@ -831,6 +836,81 @@ $("button#confirm_print_bttn").click(function() {
                 });
 
                 window.location.href = data;
+                $("#Confirm_invoice_modal").modal('hide');
+                create_toast("Info", "The invoice is printed with success");
+            } else {
+                create_toast("Error", "Erreur Serveur!");
+            }
+        },
+        error: function(resultat, statut, erreur) {
+            toastr.error(
+                "Veuillez contacter le Centre de Ressources Informatiques pour v&eacute;rifier le serveur.",
+                "Erreur Serveur!");
+        }
+    });
+
+    $("#Confirm_invoice_modal").modal('hide');
+});
+
+$("button#confirm_without_print_bttn").click(function() {
+
+    var items_id = [];
+    var quantities = [];
+    var unit_prices = [];
+    var customer_id = $("input#customer_id").val();
+    var payment = $("input#payment").val();
+
+
+    $("td.invoice_item_name").each(function() {
+        items_id.push($(this).attr("id"));
+
+    });
+
+    $("td.invoice_unit_price").each(function() {
+        unit_prices.push($(this).html());
+
+    });
+
+    $("td.invoice_item_quantity").each(function() {
+        quantities.push($(this).html());
+
+    });
+
+    var $ajaxData = {
+        get_invoice: 1
+    };
+    $ajaxData.items_id = items_id;
+    $ajaxData.quantities = quantities;
+    $ajaxData.unit_prices = unit_prices;
+
+    $ajaxData.customer_id = customer_id;
+    $ajaxData.payment = payment;
+    $ajaxData.print = 0;
+
+    //send the data to the server
+    $.ajax({
+
+        url: "includes/invoice.php",
+        type: "POST",
+        data: $ajaxData,
+        success: function(data) {
+            if (data != -1) {
+                //reset the fields
+                $("input#customer_name").val("");
+                $("input#customer_id").val(-1);
+                //$("tbody#invoice_tbody").html("");
+                $("span#invoice_total").html("0,0 DA");
+                $('#invoice_table').dataTable().fnDestroy();
+                // then initialize table again
+                $('#invoice_table').dataTable({
+                    searching: false,
+                    paging: false,
+                    "language": {
+                        "emptyTable": "Add Items to the invoice"
+                    }
+                });
+
+                //window.location.href = data;
                 $("#Confirm_invoice_modal").modal('hide');
                 create_toast("Info", "The invoice is printed with success");
             } else {

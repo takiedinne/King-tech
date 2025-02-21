@@ -234,7 +234,7 @@ include_once('db.php');
                         </div>
                         <div class="col-sm-6 form-group">
                             <h5><b>Payments:
-                                    <span class="label label-info" id="invoice_payments">0,00 DA</span></b></h5>
+                                    <span class="label label-info" id="invoice_payments">0,00</span>DA</b></h5>
                         </div>
 
 
@@ -450,7 +450,7 @@ function GetPayments(invoice_id, customer_name, date, total, payment) {
     $("input#customer_name").val(customer_name);
     $("input#Invoice_date").val(date);
     $("span#invoice_total").html(total + " DA");
-    $("span#invoice_payments").html(payment + " DA");
+    $("span#invoice_payments").html(payment);
     $("input#invoice_id_for_pay").val(invoice_id);
     $.ajax({
         url: "includes/affichage_invoices.php",
@@ -461,12 +461,24 @@ function GetPayments(invoice_id, customer_name, date, total, payment) {
         },
         success: function(data) {
             $("tbody#payments_tbody").html(data);
-            var table = $("table#payments_table").dataTable();
-
+            var table = $("table#payments_table").DataTable();
+            table.rows();
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
             return new bootstrap.Popover(popoverTriggerEl)
-            })
+            });
+
+            var sum = 1230;
+
+            // Iterate over each row
+            var sum = 0;
+            var columnIndex = 2; // Change to your target column index
+
+            table.data().each(function (rowData) {
+                sum += parseFloat(rowData[columnIndex]) || 0; // Ensure numeric conversion
+            });   
+            $("span#invoice_payments").html(sum);
+
 
         },
         error: function(resultat, statut, erreur) {
@@ -668,11 +680,10 @@ function get_depts_for_customer(customerId) {
     });
 }
 
-function delete_payment(invoice_id, date, payment) {
-
+function delete_payment(id, invoice_id, date, payment) {
 
     //delete the item from the database
-    var $btn = $("#add_payment" /* + invoice_id + "_" + date + "_" + payment */);
+    var $btn = $("#delete_payment_"+id /* + invoice_id + "_" + date + "_" + payment */);
       
     var popover = bootstrap.Popover.getOrCreateInstance($btn, {
         container: 'body',
@@ -689,6 +700,8 @@ function delete_payment(invoice_id, date, payment) {
     popover.show();
 
     $(".confirm_delete_payment").click(function() {
+        var $row = $btn.closest("tr"); // Get the table row of the button
+        
         $.ajax({
             url: "includes/invoice.php",
             type: "POST",
@@ -699,12 +712,14 @@ function delete_payment(invoice_id, date, payment) {
                 date: date
             },
             success: function(data) {
-                //delet the item from the datatable
-                table = $("#payments_table").DataTable();
-                var $tr = $($btn).parent().parent(); // Select the closest <tr> ancestor
-      
-                table.row($tr).remove().draw();
+                $row.remove();
+
                 popover.dispose();
+                // update the rest
+                span_payments = $("#invoice_payments");
+                old_payment = parseFloat(span_payments);
+                new_payment = old_payment - payment;
+                span_payments.html(new_payment);
 
             },
             error: function(resultat, statut, erreur) {

@@ -55,6 +55,7 @@ if (isset($_SESSION['role'])){
         $unit_prices = $_POST['unit_prices'];
         $customer_id = $_POST['customer_id'];
         $payment = $_POST['payment'];
+        $print = $_POST['print'];
 
         // save the invoice
         //construct the invoice number
@@ -132,7 +133,12 @@ if (isset($_SESSION['role'])){
                 $sqlPayment = "INSERT INTO `invoice_payment`(`invoice_id`, `date`, `time`, `payment`) VALUES ('$invoice_id', CURDATE(),CURRENT_TIME(), " . $payment . ")";
                 
                 if ($conn->query($sqlPayment) === TRUE) {
-                    echo write_invoice($invoice_id, $items_names, $quantities, $unit_prices, $customerName, $payment); 
+                    if($print == 1){
+                        echo write_invoice($invoice_id, $items_names, $quantities, $unit_prices, $customerName, $payment);
+                    }else{
+                        echo 1;
+                    }
+                    //echo write_invoice($invoice_id, $items_names, $quantities, $unit_prices, $customerName, $payment); 
                 } else {
                     echo -1;
                 }
@@ -175,7 +181,7 @@ if (isset($_SESSION['role'])){
         $invoice_id = $_POST['invoice_id'];
         $payment = $_POST['payment_amount'];
         
-        $sql = "INSERT INTO `invoice_payment`(`invoice_id`, `date`, `time`, `payment`) VALUES ('$invoice_id', CURDATE(),CURRENT_TIME(), " . $payment . ")";
+        $sql = "INSERT INTO `invoice_payment`(`invoice_id`, `date`, `time`, `payment`) VALUES ('$invoice_id', CURDATE(), CURRENT_TIME(), " . $payment . ")";
         if ($conn->query($sql) === TRUE) {
             echo 1;
         } else {
@@ -188,7 +194,7 @@ if (isset($_SESSION['role'])){
         $date_payment = $_POST['date'];
 
         $sql = "DELETE FROM `invoice_payment` WHERE `invoice_id` = '$invoice_id' AND `payment` = $payment AND `date` = '$date_payment'";
-        echo $sql;
+        
         if ($conn->query($sql) === TRUE) {
             echo 1;
         } else {

@@ -1,64 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bootstrap Popover Example</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-</head>
-<body>
+<?php
+session_start();
+require_once 'bootstrap.php';
+require_once 'includes/header.php';
+?>
 
-<ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
-  <li class="nav-item" role="presentation">
-    <a
-      class="nav-link active"
-      id="ex3-tab-1"
-      data-bs-toggle="tab"
-      href="#supply_tab"
-      role="tab"
-      aria-controls="supply_tab"
-      aria-selected="true"
-      >Supply</a
-    >
-  </li>
-  <li class="nav-item" role="presentation">
-    <a
-      class="nav-link"
-      id="ex3-tab-2"
-      data-bs-toggle="tab"
-      href="#selling_tab"
-      role="tab"
-      aria-controls="selling_tab"
-      aria-selected="false"
-      >Selling</a
-    >
-  </li>
-  
-</ul>
+<main id="main">
+    <!-- ======= New Sale Section ======= -->
+    <section id="new_sale" class="contact sections-bg">
+        <div class="container" data-aos="fade-up">
 
-<div class="tab-content" id="ex2-content">
-  <div
-    class="tab-pane fade show active"
-    id="supply_tab"
-    role="tabpanel"
-    aria-labelledby="ex3-tab-1"
-  >
-    Tab 1 content Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates, doloremque
-    minima mollitia sapiente illo ut harum fugit explicabo error perspiciatis at cumque nisi eaque
-    commodi culpa est sed ad amet.
-  </div>
-  <div class="tab-pane fade" id="selling_tab" role="tabpanel" aria-labelledby="ex3-tab-2">
-    Tab 2 content Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates, doloremque
-    minima mollitia sapiente illo ut harum fugit explicabo error perspiciatis at cumque nisi eaque
-    commodi culpa est sed ad amet.
-  </div>
-  <div class="tab-pane fade" id="ex3-tabs-3" role="tabpanel" aria-labelledby="ex3-tab-3">
-    Tab 3 content Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates, doloremque
-    minima mollitia sapiente illo ut harum fugit explicabo error perspiciatis at cumque nisi eaque
-    commodi culpa est sed ad amet.
-  </div>
-</div>
+            <div class="row gx-lg-0 gy-4">
+
+                <div class="col-lg-12">
+                    <div class="php-email-form">
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4> Selling and repairing phone and accessories
+                                </h4>
+                                <h4>  +213 673 39 83 27
+                                </h4>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <table id="invoice_table"
+                                class="table table-hover table-bordered table-striped table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>ITEM</td>
+                                        <th>QUANTITY</td>
+                                        <th>UNIT PRICE</td>
+                                        <th>TOTAL</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoice_tbody">
+                                <tr>
+                                    <td>LCD iPhone 7+ White</td>
+                                    <td>1</td>
+                                    <td>4800</td>
+                                    <td>4800</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8" style="text-align: left;">
+                                <h4><b>Total:
+                                        <span class="label label-info" id="invoice_total">0,00 DA</span></b></h4>
+                            </div>
+
+                            <div class="col-md-4">
+                                <button type="button" id="clear_invoice"><span class='fa-solid fa-xmark'></span>
+                                    Clear</button>
+                                <button type="button" id="print_invoice"><span class='fa-solid fa-print'></span>
+                                    Submit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Contact Form -->
+
+            </div>
+
+        </div>
+    </section><!-- End New sale Section -->
+
 </body>
+<script>
+  $(document).ready(function () {
+    $("#print_invoice").click(function () {
+        var printContent = document.getElementById("new_sale").innerHTML;
+        var originalContent = document.body.innerHTML;
+
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+        location.reload(); // Reload the page to restore original content
+    });
+  });
+
+</script>
 </html>

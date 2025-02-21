@@ -7,10 +7,10 @@ if (isset($_SESSION['role'])){
     if (isset($_POST['getAllIInvoices'])){
         $date_limit = $_POST['date_limit'];
         //sql according to role
-            $sql =  "SELECT `invoice`.*, `customer`.*, t1.nbr_item, t1.total, t2.payment FROM `invoice` INNER JOIN `customer` ON `invoice`.`customer_id` = `customer`.`customer_id`
+            $sql =  "SELECT `invoice`.*, `customer`.*, t1.nbr_item, t1.total, COALESCE(t2.payment, 0) FROM `invoice` INNER JOIN `customer` ON `invoice`.`customer_id` = `customer`.`customer_id`
                 LEFT JOIN (SELECT SUM(`unit_price` * `quantity`) as total, COUNT(*) as nbr_item, invoice_id FROM `invoice_item` GROUP BY invoice_id) as t1 on invoice.invoice_id = t1.invoice_id
-                LEFT JOIN (SELECT SUM(`payment`) as payment, invoice_id FROM `invoice_payment` GROUP BY invoice_id) as t2 on invoice.invoice_id = t2.invoice_id
-                WHERE payment < total ORDER BY date DESC;";          
+                LEFT OUTER JOIN (SELECT SUM(`payment`) as payment, invoice_id FROM `invoice_payment` GROUP BY invoice_id) as t2 on invoice.invoice_id = t2.invoice_id
+                WHERE COALESCE(t2.payment, 0) < total ORDER BY date DESC;";          
         $query = $conn->query($sql);
         $i = 1;
         while ($row = $query->fetch_assoc()) {
@@ -60,15 +60,17 @@ if (isset($_SESSION['role'])){
         $sql = "SELECT * FROM `invoice_payment` WHERE `invoice_id` = " . $invoice_id;
         $query = $conn->query($sql);
 
+        $i = 0;
         while ($row = $query->fetch_assoc()) {
+            $i++;
             echo  "<tr>
                        <td>" . $row['date'] . "</td>
                        <td>" . $row['time'] . "</td>
                        <td>". $row['payment'] ."</td>
                        <td>
                            <button  class='btn btn-danger btn-sm' 
-                           id='delete_payment_".$invoice_id."_".$row['date']."_".$row['payment']."'
-                                   onclick=\"delete_payment(".$invoice_id.", '".$row['date']."', ".$row['payment'].")\"><span class='fas fa-undo'></span> return </button>
+                           id='delete_payment_".$i."'
+                                   onclick=\"delete_payment(".$i.", ".$invoice_id.", '".$row['date']."', ".$row['payment'].")\"><span class='fas fa-undo'></span> return </button>
                        </td>
                        
                    </tr>";

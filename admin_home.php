@@ -3,7 +3,7 @@ session_start();
 require_once 'bootstrap.php';
 
 if (isset($_SESSION['connected']) == false) {
-    header('location: '.URLROOT.'/index.php');
+    header('location: ' . URLROOT . '/index.php');
     exit();
 }
 require_once 'includes/header.php';
@@ -424,14 +424,14 @@ require_once 'includes/header.php';
                                 <select class='form-control' aria-label='Default select example' id="add_item_category"
                                     name="item_category" required>
                                     <?php
-                                        require_once 'db.php';
-                                        $cat_sql = 'SELECT * FROM item_category WHERE 1';
-                                        $cat_query = $conn->query($cat_sql);
+                                    require_once 'db.php';
+                                    $cat_sql = 'SELECT * FROM item_category WHERE 1';
+                                    $cat_query = $conn->query($cat_sql);
 
-                                        while ($cat_row = $cat_query->fetch_assoc()) {
-                                            echo "<option value='" . $cat_row['cat_id'] . "' >" . $cat_row['category_name'] . "</option>";
-                                        }
-                                        ?>
+                                    while ($cat_row = $cat_query->fetch_assoc()) {
+                                        echo "<option value='" . $cat_row['cat_id'] . "' >" . $cat_row['category_name'] . "</option>";
+                                    }
+                                    ?>
                                 </select>
                             </div>
 
@@ -509,11 +509,9 @@ require_once 'includes/header.php';
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary button_green_per" id="confirm_print_bttn">
-                        <span
-                            class='fa-solid fa-print'></span> Print</button>
-                     <button type="button" class="btn btn-primary button_green_per" id="confirm_without_print_bttn">
-                        <span
-                            class='fa-solid fa-print'></span> Submit</button>
+                        <span class='fa-solid fa-print'></span> Print</button>
+                    <button type="button" class="btn btn-primary button_green_per" id="confirm_without_print_bttn">
+                        <span class='fa-solid fa-print'></span> Submit</button>
                 </div>
 
             </div>
@@ -523,7 +521,8 @@ require_once 'includes/header.php';
 </main><!-- End #main -->
 
 
-<?php require_once 'includes/footer.php';?>
+<?php require_once 'includes/footer.php'; ?>
+
 <script>
 $("#new_saleIcon").click(function() {
     $("section#new_sale").show();
@@ -570,7 +569,7 @@ $("input.AutoCompleteCustomer").on({
                 success: function(data) {
                     $("ul#listeCustomer").show();
                     $("ul#listeCustomer").html(data);
-                    // $("ul#listeElevesDossierScolaire").css("top", $("input#rechercheEleveDossierScolaire").prop("scrollTop")+28);
+
 
                 },
                 error: function(resultat, statut, erreur) {

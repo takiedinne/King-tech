@@ -56,6 +56,7 @@ if (isset($_SESSION['role'])){
         $customer_id = $_POST['customer_id'];
         $payment = $_POST['payment'];
         $print = $_POST['print'];
+        
 
         // save the invoice
         //construct the invoice number
@@ -124,7 +125,7 @@ if (isset($_SESSION['role'])){
                 $sqlCustomerName = "SELECT `customer_firstname`, `customer_surname` FROM `customer` WHERE `customer_id` = $customer_id ";
                 $resCustomerName = $conn->query($sqlCustomerName);
                 $customerName = "UNKNOWN";
-
+               
                 if($row = $resCustomerName->fetch_assoc()){
                     $customerName = $row['customer_firstname'] .' '. $row['customer_surname'];
                 }
@@ -133,6 +134,7 @@ if (isset($_SESSION['role'])){
                 $sqlPayment = "INSERT INTO `invoice_payment`(`invoice_id`, `date`, `time`, `payment`) VALUES ('$invoice_id', CURDATE(),CURRENT_TIME(), " . $payment . ")";
                 
                 if ($conn->query($sqlPayment) === TRUE) {
+                
                     if($print == 1){
                         echo write_invoice($invoice_id, $items_names, $quantities, $unit_prices, $customerName, $payment);
                     }else{

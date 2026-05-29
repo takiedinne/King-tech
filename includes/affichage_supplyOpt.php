@@ -1,35 +1,70 @@
 <?php
+
+ 
 session_start();
 include_once('../db.php');
 LogInCheck();
 
 if (isset($_SESSION['role'])) {
-    if (isset($_POST['getAllISupplyInvoices'])) {
+    
+    if (isset($_POST['getSupplyInvoices'])) {
         $date_limit = $_POST['date_limit'];
+        $supply_name = $_POST['supply_name'];
+        $invoice_id = $_POST['invoice_id'];
+        $only_not_paid = $_POST['only_not_paid'];
         //sql according to role
-        $sql = "SELECT * FROM `supply_invoice` INNER JOIN `item_supply` 
-                            ON `supply_invoice`.`supply_invoice_id` = `item_supply`.`supply_invoice_id` 
-                            INNER JOIN `supplier` ON `supplier`.`supplier_id` = `supply_invoice`.`supplier_id` 
-                            INNER JOIN `item` on `item`.`item_id` = `item_supply`.`item_id`
-                            WHERE `date` >= '" . $date_limit . "' ORDER BY date DESC";
+        
+        $sql = "SELECT 
+                t1.supply_invoice_id,
+                t1.supplier_name as s_name,
+                t1.date as s_date,
+                t1.total AS total,
+                COALESCE(t2.total_payment, 0) AS payment
+            FROM (SELECT 
+                si.supply_invoice_id,
+                CONCAT(s.supplier_firstname, ' ', s.supplier_surname) AS supplier_name,
+                si.date,
+                SUM(isu.unit_price * isu.quantity) AS total
+                    FROM 
+                        supply_invoice si
+                    JOIN 
+                        supplier s ON si.supplier_id = s.supplier_id
+                    JOIN 
+                        item_supply isu ON si.supply_invoice_id = isu.supply_invoice_id
+                    GROUP BY 
+                        si.supply_invoice_id, s.supplier_firstname, s.supplier_surname, si.date
+                ) AS t1
+            LEFT OUTER JOIN ( SELECT 
+                        si1.supply_invoice_id, 
+                        SUM(sp.payment) AS total_payment
+                    FROM 
+                        supply_invoice si1 
+                    JOIN 
+                        supply_payment sp ON si1.supply_invoice_id = sp.supply_invoice_id
+                    GROUP BY 
+                        si1.supply_invoice_id
+                ) AS t2
+            ON t1.supply_invoice_id = t2.supply_invoice_id  
+            WHERE t1.total > COALESCE(t2.total_payment, 0)
+            ORDER BY t1.date DESC;";    
         $query = $conn->query($sql);
         $i = 1;
+        
         while ($row = $query->fetch_assoc()) {
-            echo "<tr id='supplyOpt_".$row['supply_invoice_id']."_".$row['item_id']."'>
+            echo "<tr ondblclick='showSupplyModal(\"".$row['supply_invoice_id']."\")'>
                             <td>" . $i . "</td>
                             <td>" . $row['supply_invoice_id'] . "</td>
-                            <td>" . $row['supplier_firstname'] . " " . $row['supplier_surname'] . "</td>
-                            <td>" . $row['item_name'] . "</td>
-                            <td>" . $row['date'] . "</td>
-                            <td>" . $row['quantity'] . "</td>
-                            <td>" . $row['unit_price'] . "</td>
-                            <td>
-                                <button  id = 'popover_delete_" . $row['supply_invoice_id'] . "_".$row['item_id']."' tabindex='0' class='btn btn-danger btn-sm' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='right' data-bs-content='test' onclick=\"deleteSupplyOpt('".$row['supply_invoice_id']."', '".$row['item_id']."')\"><span class='fas fa-trash'></span></button>
-                            </td>
+                            <td>" . $row['s_name'] . "</td>
+                            <td>" . $row['s_date'] . "</td>
+                            <td>" . $row['total'] . "</td>
+                            <td>" . $row['payment'] . "</td>
                         </tr>";
             $i++;
 
-        }
+        } 
+    }
+    elseif(isset($_POST['GetSupplyInvoice'])){
+        echo 1;
     }
     else {
         header('location: ' . URLROOT . '/index.php?codeErreur=-5');
@@ -37,5 +72,4 @@ if (isset($_SESSION['role'])) {
 }
 else {
     header('location: ' . URLROOT . '/index.php?codeErreur=-5');
-}
-?>
+} 

@@ -4,13 +4,12 @@ include_once('../db.php');
 LogInCheck();
 
 if (isset($_SESSION['role'])){
+    
     if (isset($_POST['getAllIInvoices'])){
+        //echo 1;
         $date_limit = $_POST['date_limit'];
         //sql according to role
-            $sql =  "SELECT `invoice`.*, `customer`.*, t1.nbr_item, t1.total, COALESCE(t2.payment, 0) FROM `invoice` INNER JOIN `customer` ON `invoice`.`customer_id` = `customer`.`customer_id`
-                LEFT JOIN (SELECT SUM(`unit_price` * `quantity`) as total, COUNT(*) as nbr_item, invoice_id FROM `invoice_item` GROUP BY invoice_id) as t1 on invoice.invoice_id = t1.invoice_id
-                LEFT OUTER JOIN (SELECT SUM(`payment`) as payment, invoice_id FROM `invoice_payment` GROUP BY invoice_id) as t2 on invoice.invoice_id = t2.invoice_id
-                WHERE COALESCE(t2.payment, 0) < total ORDER BY date DESC;";          
+        $sql =  "SELECT `invoice`.*, `customer`.*, t1.nbr_item, t1.total, COALESCE(t2.payment, 0) as tot_payment FROM `invoice` INNER JOIN `customer` ON `invoice`.`customer_id` = `customer`.`customer_id` LEFT JOIN (SELECT SUM(`unit_price` * `quantity`) as total, COUNT(*) as nbr_item, invoice_id FROM `invoice_item` GROUP BY invoice_id) as t1 on invoice.invoice_id = t1.invoice_id LEFT OUTER JOIN (SELECT SUM(`payment`) as payment, invoice_id FROM `invoice_payment` GROUP BY invoice_id) as t2 on invoice.invoice_id = t2.invoice_id WHERE COALESCE(t2.payment, 0) < total ORDER BY date DESC;";          
         $query = $conn->query($sql);
         $i = 1;
         while ($row = $query->fetch_assoc()) {
@@ -21,7 +20,7 @@ if (isset($_SESSION['role'])){
                         <td>" . $row['customer_firstname'] . " ".$row['customer_surname']."</td>
                         <td>". $row['date'] ."</td>
                         <td>". $row['total'] ."</td>
-                        <td>". $row['payment'] ."</td>
+                        <td>". $row['tot_payment'] ."</td>
                         <td>
                             <button  class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target = '#Edit_invoice_modal' 
                                     onclick=\"GetInvoice(".$row['invoice_id'].", '" . $row['customer_firstname'] . " ".$row['customer_surname']."', '". $row['date'] ."')\"><span class='fa-solid fa-rotate-left'></span> return </button>
@@ -132,11 +131,11 @@ if (isset($_SESSION['role'])){
         }
         
         //sql according to role
-        $sql =  "SELECT `invoice`.*, `customer`.*, t1.nbr_item, t1.total, t2.payment FROM `invoice` INNER JOIN `customer` ON `invoice`.`customer_id` = `customer`.`customer_id`
+        $sql =  "SELECT `invoice`.*, `customer`.*, t1.nbr_item, t1.total, COALESCE(t2.payment, 0) as payment FROM `invoice` INNER JOIN `customer` ON `invoice`.`customer_id` = `customer`.`customer_id`
                 LEFT JOIN (SELECT SUM(`unit_price` * `quantity`) as total, COUNT(*) as nbr_item, invoice_id FROM `invoice_item` GROUP BY invoice_id) as t1 on invoice.invoice_id = t1.invoice_id
                 LEFT JOIN (SELECT SUM(`payment`) as payment, invoice_id FROM `invoice_payment` GROUP BY invoice_id) as t2 on invoice.invoice_id = t2.invoice_id ".$whereClause ." ORDER BY date DESC;";
 
-        //echo $sql;
+        
         $query = $conn->query($sql);
         
         $i = 1;

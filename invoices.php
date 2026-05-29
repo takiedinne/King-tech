@@ -13,7 +13,6 @@ include_once('db.php');
 
 <main id="main">
 
-    <!-- ======= New Sale Section ======= -->
     <section id="Invoice_section" class="contact sections-bg">
         <div class="container" data-aos="fade-up">
             <div class="section-header">
@@ -464,8 +463,8 @@ function GetPayments(invoice_id, customer_name, date, total, payment) {
             var table = $("table#payments_table").DataTable();
             table.rows();
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-            return new bootstrap.Popover(popoverTriggerEl)
+            var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl)
             });
 
             var sum = 1230;
@@ -474,9 +473,9 @@ function GetPayments(invoice_id, customer_name, date, total, payment) {
             var sum = 0;
             var columnIndex = 2; // Change to your target column index
 
-            table.data().each(function (rowData) {
+            table.data().each(function(rowData) {
                 sum += parseFloat(rowData[columnIndex]) || 0; // Ensure numeric conversion
-            });   
+            });
             $("span#invoice_payments").html(sum);
 
 
@@ -503,21 +502,24 @@ $("#add_payment").click(function() {
                 //add the payment to the table
                 var table = $("table#payments_table").DataTable();
                 var dt = new Date();
-                var date = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                var date = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDay();
                 var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                 table.row.add([
                     dt,
                     time,
                     payment_amount,
-                    "<button  class='btn btn-danger btn-sm' id='confirm_delete_payment_"+invoice_id+"_"+ date +"_"+time+" onclick='delete_payment(" + invoice_id +
-                    ", " + date +", '"+time+"')'><span class='fas fa-undo'></span> return </button>"
+                    "<button  class='btn btn-danger btn-sm' id='confirm_delete_payment_" +
+                    invoice_id + "_" + date + "_" + time + " onclick='delete_payment(" +
+                    invoice_id +
+                    ", " + date + ", '" + time +
+                    "')'><span class='fas fa-undo'></span> return </button>"
                 ]).draw();
 
                 //update the total payment
                 var total_payment = parseFloat($("span#invoice_payments").html().split(" ")[0]);
                 total_payment += parseFloat(payment_amount);
                 create_toast("Error", total_payment);
-                $("span#invoice_payments").html(total_payment + " DA");
+                $("span#invoice_payments").html(total_payment);
                 //clear the input
                 $("input#payment_amount").val("");
 
@@ -580,7 +582,7 @@ $("input.AutoCompleteCustomer").on({
                         "Erreur Serveur!");
                 }
             });
-        }else {
+        } else {
             $("ul#listeCustomer").hide();
             $("input#customer_id").val(-1);
             $("input#customer_type").val(-1);
@@ -683,8 +685,8 @@ function get_depts_for_customer(customerId) {
 function delete_payment(id, invoice_id, date, payment) {
 
     //delete the item from the database
-    var $btn = $("#delete_payment_"+id /* + invoice_id + "_" + date + "_" + payment */);
-      
+    var $btn = $("#delete_payment_" + id /* + invoice_id + "_" + date + "_" + payment */ );
+
     var popover = bootstrap.Popover.getOrCreateInstance($btn, {
         container: 'body',
         title: '<h4 class="custom-title"><i class="fas fa-warning"></i> Are you sure ?<button  > xxxx </button> </h4>',
@@ -701,7 +703,7 @@ function delete_payment(id, invoice_id, date, payment) {
 
     $(".confirm_delete_payment").click(function() {
         var $row = $btn.closest("tr"); // Get the table row of the button
-        
+
         $.ajax({
             url: "includes/invoice.php",
             type: "POST",
@@ -740,15 +742,15 @@ $("#NotPaidCheckBox").change(function() {
 
 
 $.fn.dataTable.ext.search.push(
-        function(settings, data, dataIndex) {
-            var total = parseFloat(data[4]) || 0; // Total column
-            var paid = parseFloat(data[5]) || 0; // Paid column
-            var checkBox = $('#NotPaidCheckBox').is(':checked'); // Checkbox state
+    function(settings, data, dataIndex) {
+        var total = parseFloat(data[4]) || 0; // Total column
+        var paid = parseFloat(data[5]) || 0; // Paid column
+        var checkBox = $('#NotPaidCheckBox').is(':checked'); // Checkbox state
 
-            if (checkBox) {
-                return paid < total;
-            }
-            return true;
+        if (checkBox) {
+            return paid < total;
         }
+        return true;
+    }
 );
 </script>
